@@ -1,6 +1,7 @@
 import * as React from "react"
-import {Button, Paper, PasswordInput, TextInput} from "@mantine/core";
+import {Button, Group, Paper, PasswordInput, TextInput} from "@mantine/core";
 import {useForm} from "@mantine/form";
+import LoginWithGoogle from "./LoginWithGoogle";
 
 interface IProps {
 }
@@ -11,14 +12,12 @@ const LoginForm: React.FC<IProps> = () => {
             email: '',
             password: '',
         },
-        validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-        },
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(form.values)
+        //    logic
+        console.log(Object.values(form.values).every(Boolean))
     }
     return <>
         <Paper shadow="xs" p="xl">
@@ -29,20 +28,19 @@ const LoginForm: React.FC<IProps> = () => {
                     required
                     {...form.getInputProps('email')}
                 />
-
                 <PasswordInput
                     placeholder="Password"
                     label="Password"
                     required
                     {...form.getInputProps('password')}
                 />
-                <Button color="cyan" type="submit" mt="xs">
-                    Login
-                </Button>
+                <Group>
+                    <Button color="cyan" type="submit" mt="xs">
+                        Login
+                    </Button>
+                    <LoginWithGoogle/>
+                </Group>
             </form>
-            {/*<Center>*/}
-            {/*    <LoginWithGoogle/>*/}
-            {/*</Center>*/}
         </Paper>
     </>
 }

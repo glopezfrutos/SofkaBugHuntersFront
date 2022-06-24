@@ -41,7 +41,7 @@ function MainLink({ icon, color, label, path }: MainLinkProps) {
 
 const data = [
     { icon: <Home size={16} />, color: 'blue', label: 'Home', path: '/dashboard' },
-    { icon: <ClipboardText size={16} />, color: 'teal', label: 'Project', path: '/add-project' },
+    { icon: <ClipboardText size={16} />, color: 'teal', label: 'Project', path: 'add-project' },
 ];
 
 export function MainLinks() {

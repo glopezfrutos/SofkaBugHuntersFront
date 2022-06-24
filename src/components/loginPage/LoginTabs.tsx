@@ -4,15 +4,16 @@ import LoginForm from "./LoginForm";
 import {HandClick, Login} from "tabler-icons-react";
 import SignupForm from "./SignupForm";
 
-interface IProps {}
+interface IProps {
+}
 
-const LoginTabs : React.FC<IProps> = () => {
+const LoginTabs: React.FC<IProps> = () => {
     return <Container size="xs" px="xs" my="xl">
         <Tabs>
-            <Tabs.Tab label="Login" icon={<Login size={14} />}>
+            <Tabs.Tab label="Login" icon={<Login size={14}/>}>
                 <LoginForm/>
             </Tabs.Tab>
-            <Tabs.Tab label="Sign up" icon={<HandClick size={14} />}>
+            <Tabs.Tab label="Sign up" icon={<HandClick size={14}/>}>
                 <SignupForm/>
             </Tabs.Tab>
         </Tabs>
