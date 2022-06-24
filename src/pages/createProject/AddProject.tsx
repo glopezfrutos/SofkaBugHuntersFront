@@ -1,5 +1,5 @@
 import * as React from "react"
-import CreateProjectForm from "../../components/createProject/CreateProjectForm";
+import CreateProjectForm from "../../components/project/createProject/CreateProjectForm";
 import {Title} from "@mantine/core";
 
 interface IProps {}
