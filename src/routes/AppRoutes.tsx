@@ -4,6 +4,7 @@ import DashboardShell from "../pages/dashboard/DashboardShell";
 import LoginPage from "../pages/login/LoginPage";
 import AddProject from "../pages/createProject/AddProject";
 import ProjectCharts from "../pages/chartsProject/ProjectCharts";
+import ProjectsPage from "../pages/allProjects/ProjectsPage";
 
 interface IProps {
 }
@@ -12,10 +13,11 @@ const AppRoutes: React.FC<IProps> = () => {
 
     return <BrowserRouter>
         <Routes>
-            <Route path='/' element={<LoginPage/>} />
+            <Route path='/' element={<LoginPage/>}/>
             <Route path="/dashboard" element={<DashboardShell/>}>
                 <Route index element={<ProjectCharts/>}/>
                 <Route path='add-project' element={<AddProject/>}/>
+                <Route path='all-projects' element={<ProjectsPage/>}/>
             </Route>
             {/*<Route path='*' element={<PageNotFound/>}/>*/}
         </Routes>
