@@ -4,7 +4,9 @@ interface IProps {}
 
 const LoginPage : React.FC<IProps> = () => {
     const [show, setShow] = React.useState(false)
-    return <></>
+    return <>
+        <p>login</p>
+    </>
 }
 
 export default LoginPage

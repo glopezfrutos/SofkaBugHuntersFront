@@ -27,7 +27,7 @@ const ShellHeader : React.FC<IProps> = ({setOpened, opened}) => {
                 />
             </MediaQuery>
 
-            <Title order={3}>Sofka Birthday Tracker</Title>
+            <Title order={3}>Sofka Bug Tracker</Title>
 
             <ToggleDarkButton/>
         </div>
