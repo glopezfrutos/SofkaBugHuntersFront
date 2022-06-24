@@ -1,11 +1,21 @@
 import * as React from "react"
-import {Button, Paper, PasswordInput, TextInput} from "@mantine/core";
+import {Button, Group, Paper, PasswordInput, TextInput} from "@mantine/core";
+import {useForm} from "@mantine/form";
 
-interface IProps {}
+interface IProps {
+}
 
-const SignupForm : React.FC<IProps> = () => {
+const SignupForm: React.FC<IProps> = () => {
+    const form = useForm({
+        initialValues: {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+    })
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+    //    logic
     }
 
     return <>
@@ -14,17 +24,25 @@ const SignupForm : React.FC<IProps> = () => {
                 <TextInput
                     placeholder="Your email"
                     label="Email"
-                    required/>
-                <PasswordInput
-                    placeholder="Password"
-                    label="Password"
                     required
+                    {...form.getInputProps('email')}
                 />
-                <PasswordInput
-                    placeholder="Confirm password"
-                    label="Confirm Password"
-                    required
-                />
+                <Group grow>
+                    <PasswordInput
+                        placeholder="Password"
+                        label="Password"
+                        required
+                        {...form.getInputProps('password')}
+
+                    />
+                    <PasswordInput
+                        placeholder="Confirm password"
+                        label="Confirm Password"
+                        required
+                        {...form.getInputProps('confirmPassword')}
+
+                    />
+                </Group>
                 <Button color="cyan" type="submit" mt="xs">
                     Sign up
                 </Button>
