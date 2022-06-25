@@ -1,7 +1,8 @@
 import * as React from "react"
-import {Badge, Card, Grid, Group, List, Text, Title, useMantineTheme} from "@mantine/core";
+import {Anchor, Badge, Card, Grid, Group, Text, Title, useMantineTheme} from "@mantine/core";
 import {IProject} from "../../../redux/features/projects/projectTypes";
 import {getOwners} from "./visual/projectCardVisualUtils";
+import {Link} from "react-router-dom";
 
 interface IProps {
     project: IProject
@@ -25,7 +26,7 @@ const ProjectCard: React.FC<IProps> = ({project}) => {
         <Grid.Col md={4} xl={3}>
             <Card shadow="sm" p="lg">
                 <Group>
-                    <Text>id: {project.id}</Text>
+                    <Anchor component={Link} to={`/dashboard/project/${project.id}`}>{project.id}</Anchor>
                     <Title order={4} align='center'>{project.name}</Title>
                 </Group>
 
