@@ -11,6 +11,7 @@ const dummyData: IProject = {
     closedAt: "2023-01-01",
     description: "long description here",
     members: ['test@gmail.com', 'test@gmail.com', 'test@gmail.com',],
+    // owners: ['admin@gmail.com', 'test@gmail.com', 'nobody@gmail.com']
     owners: ['admin@gmail.com']
 
 }
