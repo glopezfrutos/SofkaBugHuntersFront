@@ -45,7 +45,6 @@ const CreateProjectForm: React.FC<IProps> = () => {
 
                 />
                 <DatePicker
-                    required
                     placeholder="Pick date"
                     label="End date"
                     {...form.getInputProps('date')}
