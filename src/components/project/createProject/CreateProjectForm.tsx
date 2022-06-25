@@ -2,6 +2,7 @@ import * as React from "react"
 import {Button, Container, MultiSelect, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
+import {showNotification} from "@mantine/notifications";
 
 interface IProps {
 }
@@ -23,6 +24,10 @@ const CreateProjectForm: React.FC<IProps> = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(form.values)
+        showNotification({
+            title: 'Default notification',
+            message: 'Hey there, your code is awesome!',
+        })
     }
     return <>
         <Container size="xs" px="xs" my='xs'>
