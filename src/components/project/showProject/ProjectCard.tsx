@@ -1,6 +1,7 @@
 import * as React from "react"
 import {Badge, Card, Grid, Group, List, Text, Title, useMantineTheme} from "@mantine/core";
 import {IProject} from "../../../redux/features/projects/projectTypes";
+import {getOwners} from "./visual/projectCardVisualUtils";
 
 interface IProps {
     project: IProject
@@ -17,9 +18,9 @@ const ProjectCard: React.FC<IProps> = ({project}) => {
         ? theme.colors.dark[1]
         : theme.colors.gray[7]
 
-    //replace this with a List
-    // <List/>
-    const owners = project.owners.map(owner => <Text key={owner} weight={500}>{owner}</Text>)
+
+
+    const [title, owners] = getOwners(project)
     return (
         <Grid.Col md={4} xl={3}>
             <Card shadow="sm" p="lg">
@@ -28,11 +29,11 @@ const ProjectCard: React.FC<IProps> = ({project}) => {
                     <Title order={4} align='center'>{project.name}</Title>
                 </Group>
 
-                <Text>Owners:</Text>
+                <Text>{title}</Text>
                 {owners}
 
                 <Group style={{marginBottom: 5, marginTop: theme.spacing.sm}}>
-                    <Badge color="pink" variant="light">
+                    <Badge color="green" radius="sm" variant="filled">
                         {project.status}
                     </Badge>
                 </Group>

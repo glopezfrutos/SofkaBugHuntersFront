@@ -13,6 +13,7 @@ const dummyData: IProject = {
     members: ['test@gmail.com', 'test@gmail.com', 'test@gmail.com',],
     // owners: ['admin@gmail.com', 'test@gmail.com', 'nobody@gmail.com']
     owners: ['admin@gmail.com']
+    // owners:[]
 
 }
 
