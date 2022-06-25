@@ -1,11 +1,14 @@
 import * as React from "react"
 import BugForm from "../../../components/bug/createBug/BugForm";
+import {Title} from "@mantine/core";
 
-interface IProps {}
+interface IProps {
+}
 
-const AddBugPage : React.FC<IProps> = () => {
+const AddBugPage: React.FC<IProps> = () => {
     return <>
-    <BugForm/>
+        <Title order={3} align='center'>Create new Bug</Title>
+        <BugForm/>
     </>
 }
 

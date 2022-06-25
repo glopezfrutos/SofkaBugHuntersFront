@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const getProjectThunk = createAsyncThunk("get/products",
+export const getProjectsThunk = createAsyncThunk("get/products",
     async () => {
     //    fetch
     }
