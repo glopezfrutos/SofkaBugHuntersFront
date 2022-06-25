@@ -2,15 +2,24 @@ import * as React from "react"
 import {Button, Container, MultiSelect, Select, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
+import {useState} from "react";
 
 interface IProps {}
 
 const CreateTaskForm : React.FC<IProps> = () => {
+    //multiple select data
+    const [data, setData] = useState(['React', 'Angular', 'Svelte', 'Vue']);
+    // map over the backend data to fill the selects' options
+    const projectSelectData = []
+    const responsableSelectData = []
     const form = useForm({
         initialValues: {
+            projectId: '',
             name: '',
             description: '',
-            date: new Date(),
+            endDate: new Date(),
+            responsableEmail: '',
+            tags: [] as string[]
         },
     })
 
@@ -24,23 +33,25 @@ const CreateTaskForm : React.FC<IProps> = () => {
                 <Select
                     required
                     label="Pick a project"
-                    placeholder="Pick one"
+                    placeholder="Project to add task to..."
                     data={[
                         { value: 'react', label: 'React' },
                         { value: 'ng', label: 'Angular' },
                         { value: 'svelte', label: 'Svelte' },
                         { value: 'vue', label: 'Vue' },
                     ]}
+                    {...form.getInputProps('projectId')}
+
                 />
                 <TextInput
-                    placeholder="Project name"
+                    placeholder="Task name"
                     label="Name"
                     required
                     {...form.getInputProps('name')}
 
                 />
                 <Textarea
-                    placeholder="Project description"
+                    placeholder="Task description"
                     label="Description"
                     autosize
                     minRows={2}
@@ -52,10 +63,31 @@ const CreateTaskForm : React.FC<IProps> = () => {
                 <DatePicker
                     placeholder="Pick date"
                     label="End date"
-                    {...form.getInputProps('date')}
+                    {...form.getInputProps('endDate')}
 
                 />
-
+                <Select
+                    required
+                    label="Pick a responsable"
+                    placeholder="Pick one"
+                    data={[
+                        { value: 'react', label: 'React' },
+                        { value: 'ng', label: 'Angular' },
+                        { value: 'svelte', label: 'Svelte' },
+                        { value: 'vue', label: 'Vue' },
+                    ]}
+                    {...form.getInputProps('responsableEmail')}
+                />
+                <MultiSelect
+                    label="Add some tags"
+                    data={data}
+                    placeholder="Select tags"
+                    searchable
+                    creatable
+                    getCreateLabel={(query) => `+ Create ${query}`}
+                    onCreate={(query) => setData((current) => [...current, query])}
+                    {...form.getInputProps('tags')}
+                />
                 <Button
                     color='blue'
                     radius='lg'
