@@ -1,6 +1,9 @@
 import * as React from "react"
 import {Button, Group, Paper, PasswordInput, TextInput} from "@mantine/core";
 import {useForm} from "@mantine/form";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {auth} from "../../firebaseConfig";
+import {showNotification} from "@mantine/notifications";
 
 interface IProps {
 }
@@ -15,8 +18,27 @@ const SignupForm: React.FC<IProps> = () => {
     })
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-    //    logic
+        const {email, password, confirmPassword} = form.values
+        if (email && (password === confirmPassword)) {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    console.log(userCredential)
+                //    dispatch
+                //    navigate
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                });
+        } else {
+            console.log("error/ show notification")
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: 'Some fields do not match, try again!',
+            })
+        }
     }
+
 
     return <>
         <Paper shadow="xs" p="xl">
