@@ -1,5 +1,5 @@
 export interface IUser {
     id: string
     email: string
-    status: string
+    rol: string // Enum: ADMIN, TESTER, DEVELOPER, READER (default);
 }

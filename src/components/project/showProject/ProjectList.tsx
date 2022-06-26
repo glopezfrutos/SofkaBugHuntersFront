@@ -4,14 +4,24 @@ import {fetchStatus} from "../../../redux/features/projects/projectTypes";
 import {useSelector} from "react-redux";
 import {selectProjectFetchStatus, selectProjectList} from "../../../redux/features/projects/projectSlice";
 import ProjectCard from "./ProjectCard";
+import {useEffect} from "react";
+import {useAppDispatch} from "../../../redux/app/store";
+import {getProjectsThunk} from "../../../redux/features/projects/projectThunks";
 
 interface IProps {
 }
 
 const ProjectList: React.FC<IProps> = () => {
+    const dispatch = useAppDispatch()
     const projectList = useSelector(selectProjectList())
     const status = useSelector(selectProjectFetchStatus())
-    console.log(status)
+
+    useEffect(() => {
+        if (status === fetchStatus.IDLE) {
+            dispatch(getProjectsThunk())
+        }
+    }, [])
+
     const loader =
         <Center>
             <Loader color="pink" variant="bars"/>
@@ -25,7 +35,7 @@ const ProjectList: React.FC<IProps> = () => {
     return <>
         {status === fetchStatus.PENDING && loader}
         {status === fetchStatus.FULFILLED && grid}
-        {/*{status === fetchStatus.REJECTED && <ErrorComponent/>}*/}
+        {status === fetchStatus.REJECTED && <div>Error while fetching</div>}
     </>
 }
 
