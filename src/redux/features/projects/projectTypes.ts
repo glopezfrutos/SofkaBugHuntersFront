@@ -1,4 +1,3 @@
-
 export interface IProjectInitialState {
     projectList: IProject[]
     projectChosen: IProject
@@ -7,21 +6,20 @@ export interface IProjectInitialState {
 }
 
 export interface IProject {
-    id ?: string
+    id?: string
     name: string
     description: string
     teamEmails: string[]
     owners: string[]
-    createdAt: string
-    closedAt: string
+    createdAt ?: string
+    closedAt?: string
     status ?: string
 }
 
 
-
 export enum fetchStatus {
     IDLE = 'IDLE',
-    PENDING='PENDING',
+    PENDING = 'PENDING',
     REJECTED = 'REJECTED',
     FULFILLED = 'FULFILLED'
 }

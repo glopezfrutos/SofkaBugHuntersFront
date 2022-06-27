@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchStatus, IProject, IProjectInitialState} from "./projectTypes";
 import {RootState} from "../../app/store";
-import {getOneProjectByIdThunk, getProjectsThunk} from "./projectThunks";
+import {getOneProjectByIdThunk, getProjectsThunk, postProjectsThunk} from "./projectThunks";
 
 
 const initialState: IProjectInitialState = {
@@ -33,6 +33,13 @@ const projectSlice = createSlice({
         builder.addCase(getOneProjectByIdThunk.fulfilled, (state, action:PayloadAction<IProject | undefined>) => {
             if (action.payload) {
                 state.projectChosen = action.payload
+                state.fetchStatus = fetchStatus.FULFILLED
+            }
+        })
+    //    post project
+        builder.addCase(postProjectsThunk.fulfilled, (state, action:PayloadAction<IProject | undefined>) => {
+            if (action.payload) {
+                state.projectList.push(action.payload)
                 state.fetchStatus = fetchStatus.FULFILLED
             }
         })
