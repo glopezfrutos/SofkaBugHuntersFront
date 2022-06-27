@@ -37,5 +37,6 @@ export default projectSlice.reducer
 
 
 export const selectProjectList = () => (state: RootState) => state.projects.projectList
+export const selectProjectChosen = () => (state: RootState) => state.projects.projectChosen
 export const selectProjectError = () => (state: RootState) => state.projects.error
 export const selectProjectFetchStatus = () => (state: RootState) => state.projects.fetchStatus

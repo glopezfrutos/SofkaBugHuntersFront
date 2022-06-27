@@ -4,10 +4,10 @@ import {HEADERS, HttpMethod} from "../../general/generalTypes";
 
 const ENDPOINT = 'https://bughuntersback.herokuapp.com/api/v1/project/'
 
-export interface IResponse {
-    data: IProject[]
-    error: null | string
-}
+// export interface IResponse {
+//     data: IProject[]
+//     error: null | string
+// }
 
 export const getProjectsThunk = createAsyncThunk("get/projects",
     async () => {
@@ -15,6 +15,20 @@ export const getProjectsThunk = createAsyncThunk("get/projects",
             const response = await fetch(ENDPOINT)
             if (response.ok) {
                 return await response.json() as IProject[]
+            }
+            throw new Error(response.statusText)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+)
+
+export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
+    async (projectId: string) => {
+        try {
+            const response = await fetch(`${ENDPOINT}${projectId}`)
+            if (response.ok) {
+                return await response.json() as IProject
             }
             throw new Error(response.statusText)
         } catch (e) {
