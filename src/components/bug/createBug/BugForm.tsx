@@ -11,7 +11,6 @@ const BugForm: React.FC<IProps> = () => {
         initialValues: {
             title: '',
             description: '',
-            spotDate: new Date(),
             author: '',
             taskId: '',
             responsableEmail: '',
@@ -66,13 +65,6 @@ const BugForm: React.FC<IProps> = () => {
                     maxLength={500}
                     required
                     {...form.getInputProps('description')}
-
-                />
-                <DatePicker
-                    required
-                    placeholder="Pick date"
-                    label="Spotted Date"
-                    {...form.getInputProps('spotDate')}
 
                 />
                 <Select
