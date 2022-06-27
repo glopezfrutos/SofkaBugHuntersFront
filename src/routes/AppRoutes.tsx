@@ -22,8 +22,10 @@ const AppRoutes: React.FC<IProps> = () => {
                 <Route index element={<ProjectCharts/>}/>
                 <Route path='add-project' element={<AddProject/>}/>
                 <Route path='all-projects' element={<ProjectsPage/>}/>
-                <Route path={`project/:id`} element={<ProjectDetailsPage/>}>
-
+                <Route path='project/:projectId' element={<ProjectDetailsPage/>}>
+                    <Route path='task/:taskId'>
+                        <Route path='bug/:bugId'/>
+                    </Route>
                 </Route>
                 <Route path='add-task' element={<AddTaskPage/>}/>
                 <Route path='add-bug' element={<AddBugPage/>}/>

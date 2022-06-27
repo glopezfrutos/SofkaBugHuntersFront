@@ -4,17 +4,6 @@ import {RootState} from "../../app/store";
 import {getProjectsThunk, IResponse} from "./projectThunks";
 
 
-// const dummyData: IProject = {
-//     id: '123',
-//     name: "dummy project",
-//     status: "open",
-//     createdAt: "2022-06-24",
-//     closedAt: "2023-01-01",
-//     description: "long description here",
-//     teamEmails: ['test@gmail.com', 'test@gmail.com', 'test@gmail.com',],
-//     owners: ['admin@gmail.com']
-// }
-
 const initialState: IProjectInitialState = {
     projectList: [],
     fetchStatus: fetchStatus.IDLE,
@@ -33,14 +22,10 @@ const projectSlice = createSlice({
             state.fetchStatus = fetchStatus.REJECTED
 
         })
-        builder.addCase(getProjectsThunk.fulfilled, (state, action: PayloadAction<IResponse>) => {
-            const {error, data} = action.payload
-            if (!error) {
-                state.projectList = data
+        builder.addCase(getProjectsThunk.fulfilled, (state, action:PayloadAction<IProject[] | undefined>) => {
+            if (action.payload) {
+                state.projectList = action.payload
                 state.fetchStatus = fetchStatus.FULFILLED
-            } else {
-                state.fetchStatus = fetchStatus.REJECTED
-                state.error = error
             }
         })
     }
