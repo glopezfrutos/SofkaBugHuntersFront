@@ -6,7 +6,6 @@ import AddProject from "../pages/project/createProject/AddProject";
 import ProjectCharts from "../pages/chartsProject/ProjectCharts";
 import ProjectsPage from "../pages/project/allProjects/ProjectsPage";
 import ProjectDetailsPage from "../pages/project/detailProject/ProjectDetailsPage";
-import CreateTaskForm from "../components/task/createTask/CreateTaskForm";
 import AddTaskPage from "../pages/task/createTask/AddTaskPage";
 import AddBugPage from "../pages/bug/createBug/AddBugPage";
 import TaskDetailsPage from "../pages/task/detailTask/TaskDetailsPage";
