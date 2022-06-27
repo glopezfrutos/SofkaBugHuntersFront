@@ -6,8 +6,6 @@ interface IProps {
 }
 
 const ProjectDetailsPage: React.FC<IProps> = () => {
-    const params = useParams()
-    console.log(params)
     return <>
         <ProjectDetailTabs/>
     </>

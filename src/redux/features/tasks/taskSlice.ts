@@ -1,7 +1,8 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ITask, ITaskInitialState} from "./taskTypes";
 import {fetchStatus} from "../projects/projectTypes";
 import {RootState} from "../../app/store";
+import {getChildrenTasks} from "./taskThunks";
 
 
 const initialState: ITaskInitialState = {
@@ -15,8 +16,13 @@ const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {},
-    extraReducers: (build) => {
-
+    extraReducers: (builder) => {
+        builder.addCase(getChildrenTasks.fulfilled, (state, action:PayloadAction<ITask[] | undefined>) => {
+            if (action.payload) {
+                state.taskList = action.payload
+                state.fetchStatus = fetchStatus.FULFILLED
+            }
+        })
     }
 })
 

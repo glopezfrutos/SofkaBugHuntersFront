@@ -14,7 +14,7 @@ export interface IProject {
     owners: string[]
     createdAt: string
     closedAt: string
-    status: string
+    status ?: string
 }
 
 
