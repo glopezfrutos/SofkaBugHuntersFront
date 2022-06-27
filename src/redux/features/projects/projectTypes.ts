@@ -1,6 +1,7 @@
 
 export interface IProjectInitialState {
     projectList: IProject[]
+    projectChosen: IProject
     error: null | string
     fetchStatus: fetchStatus
 }

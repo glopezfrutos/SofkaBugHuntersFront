@@ -6,6 +6,7 @@ import {getProjectsThunk, IResponse} from "./projectThunks";
 
 const initialState: IProjectInitialState = {
     projectList: [],
+    projectChosen: {} as IProject,
     fetchStatus: fetchStatus.IDLE,
     error: null
 }
