@@ -32,6 +32,7 @@ const LoginForm: React.FC<IProps> = () => {
                     // Signed in
                     const user = userCredential.user;
                     console.log(user)
+
                     //dispatch
                     localStorage.setItem("user", JSON.stringify(user));
                     //navigate
