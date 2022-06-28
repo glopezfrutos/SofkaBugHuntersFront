@@ -17,9 +17,7 @@ const ProjectList: React.FC<IProps> = () => {
     const status = useSelector(selectProjectFetchStatus())
 
     useEffect(() => {
-        if (status === fetchStatus.IDLE) {
-            dispatch(getProjectsThunk())
-        }
+        dispatch(getProjectsThunk())
     }, [])
 
     const loader =
