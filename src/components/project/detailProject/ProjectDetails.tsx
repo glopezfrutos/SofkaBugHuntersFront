@@ -1,8 +1,8 @@
 import * as React from "react"
+import {useState} from "react"
 import {IProject} from "../../../redux/features/projects/projectTypes";
-import {Title, Text, Stack, List, Group, Badge, ActionIcon, Modal} from "@mantine/core";
-import {SquarePlus} from "tabler-icons-react";
-import {useState} from "react";
+import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text, Title} from "@mantine/core";
+import {Subtask, Trash} from "tabler-icons-react";
 import CreateTaskForm from "../../task/createTask/CreateTaskForm";
 
 interface IProps {
@@ -13,27 +13,51 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
     const [opened, setOpened] = useState(false);
     const teamMembers = project?.teamEmails?.map(member => <List.Item key={member}>{member}</List.Item>)
     const owners = project?.owners?.map(owner => <List.Item key={owner}>{owner}</List.Item>)
-    return <>
 
-        <Title order={3}>Project title: {project.name}</Title>
-        <Badge size="lg" radius="sm" variant="dot">{project.status}</Badge>
-        <Text>Description: {project.description}</Text>
-        <Group>
-            <Text>Members:</Text>
-            <List>
-                {teamMembers}
-            </List>
+    return <Container>
+        <Group my='md'>
+            <Title order={3}>{project.name}</Title>
+            <Badge size="lg" radius="sm" variant="dot">{project.status}</Badge>
         </Group>
-        <Text>Owner:</Text>
-        <List>
-            {owners}
-        </List>
 
-        <Group>
-        <Text>Add new Task:</Text>
-        <ActionIcon color='yellow' onClick={() => setOpened(true)}>
-            <SquarePlus  />
-        </ActionIcon>
+
+        <Accordion>
+            <Accordion.Item label='Description'>
+                <Text>{project.description}</Text>
+            </Accordion.Item>
+        </Accordion>
+
+
+        <Group my='md'>
+            <Container>
+
+                <Text>Members:</Text>
+                <List>
+                    {teamMembers}
+                </List>
+            </Container>
+            <Container>
+                <Text>Owners:</Text>
+                <List>
+                    {owners}
+                </List>
+            </Container>
+        </Group>
+
+
+        <Group my='md'>
+            <Container>
+                <Text>Add a task</Text>
+                <ActionIcon color='yellow' onClick={() => setOpened(true)}>
+                    <Subtask/>
+                </ActionIcon>
+            </Container>
+            <Container>
+                <Text>Delete project</Text>
+                <ActionIcon color='red' onClick={() => setOpened(true)}>
+                    <Trash/>
+                </ActionIcon>
+            </Container>
         </Group>
         <Modal
             size='md'
@@ -44,7 +68,7 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
             <CreateTaskForm projectId={project.id!} projectName={project.name}/>
         </Modal>
 
-        <Stack align="center" justify="flex-start" spacing="sm" sx={(theme) => ({
+        <Stack my='lg' align="center" justify="flex-start" spacing="sm" sx={(theme) => ({
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
             height: 300
         })}>
@@ -54,7 +78,7 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
                 <Text>Closed at: {project.closedAt}</Text>
             }
         </Stack>
-    </>
+    </Container>
 }
 
 export default ProjectDetails

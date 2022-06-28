@@ -7,6 +7,7 @@ import {showNotification} from "@mantine/notifications";
 import {useAppDispatch} from "../../../redux/app/store";
 import {postProjectsThunk} from "../../../redux/features/projects/projectThunks";
 import {formatDate} from "../../../utils/dateUtils";
+import {IProject} from "../../../redux/features/projects/projectTypes";
 
 interface IProps {
 }
@@ -36,11 +37,12 @@ const CreateProjectForm: React.FC<IProps> = () => {
 
         if (valid && membersLength) {
             const checkDate = isBefore ? formatDate(closedAt) : ''
-            const newProject = {
+            const newProject: IProject = {
                 name,
                 description,
                 teamEmails,
                 owners,
+                createdAt: formatDate(new Date()),
                 closedAt: checkDate
             }
             dispatch(postProjectsThunk(newProject))

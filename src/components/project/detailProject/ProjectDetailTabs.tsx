@@ -23,8 +23,6 @@ const ProjectDetailTabs : React.FC<IProps> = () => {
     }, [])
     const projectChosen = useSelector(selectProjectChosen())
     const taskList = useSelector(selectTaskList())
-    console.log(projectChosen)
-    console.log(taskList)
     return <>
         <Tabs>
             <Tabs.Tab label="Details" icon={<Photo size={14} />}>

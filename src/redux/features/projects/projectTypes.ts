@@ -11,7 +11,7 @@ export interface IProject {
     description: string
     teamEmails: string[]
     owners: string[]
-    createdAt ?: string
+    createdAt : string
     closedAt?: string
     status ?: string
 }
