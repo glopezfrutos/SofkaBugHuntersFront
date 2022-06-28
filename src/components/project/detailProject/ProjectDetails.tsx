@@ -1,31 +1,56 @@
 import * as React from "react"
 import {useState} from "react"
 import {IProject} from "../../../redux/features/projects/projectTypes";
-import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text, Title} from "@mantine/core";
+import {
+    Accordion,
+    ActionIcon,
+    Badge,
+    Container,
+    Group,
+    List,
+    Modal,
+    Stack,
+    Text,
+    TextInput,
+    Title
+} from "@mantine/core";
 import {Subtask, Trash} from "tabler-icons-react";
 import CreateTaskForm from "../../task/createTask/CreateTaskForm";
+import {useAppDispatch} from "../../../redux/app/store";
+import {deleteProjectThunk} from "../../../redux/features/projects/projectThunks";
+import DeleteProjectForm from "../deleteProject/DeleteProjectForm";
 
 interface IProps {
     project: IProject
 }
 
 const ProjectDetails: React.FC<IProps> = ({project}) => {
+    const dispatch = useAppDispatch()
     const [opened, setOpened] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const teamMembers = project?.teamEmails?.map(member => <List.Item key={member}>{member}</List.Item>)
     const owners = project?.owners?.map(owner => <List.Item key={owner}>{owner}</List.Item>)
 
+
+
     return <Container>
         <Group my='md'>
-            <Title order={3}>{project.name}</Title>
-            <Badge size="lg" radius="sm" variant="dot">{project.status}</Badge>
+            <Container>
+                <Title order={3}>{project.name}</Title>
+                <Badge size="lg" radius="sm" variant="dot">{project.status}</Badge>
+            </Container>
+
         </Group>
 
 
-        <Accordion>
-            <Accordion.Item label='Description'>
-                <Text>{project.description}</Text>
-            </Accordion.Item>
-        </Accordion>
+        <Container>
+
+            <Accordion>
+                <Accordion.Item label='Description'>
+                    <Text>{project.description}</Text>
+                </Accordion.Item>
+            </Accordion>
+        </Container>
 
 
         <Group my='md'>
@@ -54,7 +79,7 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
             </Container>
             <Container>
                 <Text>Delete project</Text>
-                <ActionIcon color='red' onClick={() => setOpened(true)}>
+                <ActionIcon color='red' onClick={() => setOpenDelete(true)}>
                     <Trash/>
                 </ActionIcon>
             </Container>
@@ -66,6 +91,15 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
             title={`Adding new task to ${project.name}`}
         >
             <CreateTaskForm projectId={project.id!} projectName={project.name}/>
+        </Modal>
+
+        <Modal
+            size='md'
+            opened={openDelete}
+            onClose={() => setOpenDelete(false)}
+            title={`Are you sure you want to delete ${project.name}?`}
+        >
+                <DeleteProjectForm project={project}/>
         </Modal>
 
         <Stack my='lg' align="center" justify="flex-start" spacing="sm" sx={(theme) => ({
