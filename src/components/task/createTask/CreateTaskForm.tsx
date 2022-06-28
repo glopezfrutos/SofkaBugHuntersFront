@@ -8,12 +8,18 @@ import {useAppDispatch} from "../../../redux/app/store";
 import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
+import dayjs from "dayjs";
+import {formatDate} from "../../../utils/dateUtils";
+import {ITask} from "../../../redux/features/tasks/taskTypes";
+import {formatTextToArray} from "../../../utils/textUtils";
+import {postTaskThunk} from "../../../redux/features/tasks/taskThunks";
+import {showNotification} from "@mantine/notifications";
 
 interface IProps {
     project: IProject
 }
 
-const CreateTaskForm : React.FC<IProps> = ({project}) => {
+const CreateTaskForm: React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getUsersThunk())
@@ -21,39 +27,57 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
     const usersList = useSelector(selectUserList())
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
-    const [, setResponsibleEmailData] = useState(['Jhon@gmail.om', 'Juan@gmai.com']);
+    const [, setResponsibleEmailData] = useState([] as string[]);
+    const [additionalFilesData, setAdditionalFilesData] = useState([] as string[])
     // map over the backend data to fill the selects' options
-    const responsableSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
+    const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
 
     const form = useForm({
         initialValues: {
             name: '',
             description: '',
             closedAt: new Date(),
-            responsableEmail: [] as string [],
-            additionalFilesId: '',
+            responsibleEmail: [] as string[],
+            additionalFilesId: [] as string[],
             tag: [] as string[]
         },
     })
 
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        /*
-        {
-    "projectId": "123",
-    "projectName": "java",
-    "name": "create dto",
-    "createdAt": "2022-06-26",
-    "closedAt": "",
-    "tag": ["java", "programming"],
-    "description": "tarea de java",
-    "additionalFilesId": ["link1", "link2"],
-    "responsibleEmail": ["diego", "fer", "kelly"]
-}
-        * */
         e.preventDefault()
-        console.log(form.values)
+        const {name, description, responsibleEmail, closedAt, additionalFilesId, tag} = form.values
+        const areValid = [name, description].every(Boolean)
+        const responsibleLength = responsibleEmail.length
+        const isBefore = dayjs().isBefore(dayjs(closedAt))
+        if (areValid && responsibleLength) {
+            const checkDate = isBefore ? formatDate(closedAt) : ''
+            const newTask: ITask = {
+                name,
+                description,
+                tag,
+                closedAt: checkDate,
+                createdAt: formatDate(new Date()),
+                projectId: project.id!,
+                projectName: project.name,
+                additionalFilesId,
+                responsibleEmail,
+            }
+            console.log(newTask)
+            dispatch(postTaskThunk(newTask))
+            showNotification({
+                title: 'Task added successfully',
+                message: 'The task was saved!',
+            })
+            form.reset()
+            return
+        }
+        showNotification({
+            title: 'There is an error on the form!',
+            color: 'red',
+            message: 'Check if the date is correct...',
+        })
     }
-    console.log(project)
     return <>
         <Container size="xs" px="xs" my='xs'>
             <Text>Project id: {project?.id}</Text>
@@ -88,7 +112,7 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
                     placeholder="Select items"
                     searchable
                     creatable
-                    {...form.getInputProps('responsableEmail')}
+                    {...form.getInputProps('responsibleEmail')}
                     getCreateLabel={(query) => `+ Create ${query}`}
                     onCreate={(query) => setResponsibleEmailData((current) => [...current, query])}
                 />
@@ -102,13 +126,15 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
                     onCreate={(query) => setTagsData((current) => [...current, query])}
                     {...form.getInputProps('tag')}
                 />
-                <Textarea
+                <MultiSelect
                     placeholder="Links..."
                     label="Extra documentation"
-                    autosize
-                    minRows={2}
-                    maxRows={4}
-                    maxLength={2000}
+
+                    data={additionalFilesData}
+                    searchable
+                    creatable
+                    getCreateLabel={(query) => `+ Create ${query}`}
+                    onCreate={(query) => setAdditionalFilesData((current) => [...current, query])}
                     {...form.getInputProps('additionalFilesId')}
                 />
                 <Button

@@ -43,7 +43,6 @@ const CreateProjectForm: React.FC<IProps> = () => {
         const valid = [name, description].every(Boolean)
         const membersLength = teamEmails.length && owners.length
         const isBefore = dayjs().isBefore(dayjs(closedAt))
-        console.log(isBefore)
 
         if (valid && membersLength) {
             const checkDate = isBefore ? formatDate(closedAt) : ''
