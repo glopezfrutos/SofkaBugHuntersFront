@@ -74,7 +74,7 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
             onClose={() => setOpened(false)}
             title={`Adding new task to ${project.name}`}
         >
-            <CreateTaskForm projectId={project.id!} projectName={project.name}/>
+            <CreateTaskForm project={project}/>
         </Modal>
 
         <Modal

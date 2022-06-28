@@ -1,20 +1,30 @@
 import * as React from "react"
-import {useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import {Button, Container, MultiSelect, Text, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
 import {IProject} from "../../../redux/features/projects/projectTypes";
+import {useAppDispatch} from "../../../redux/app/store";
+import {getUsersThunk} from "../../../redux/features/users/userThunks";
+import {useSelector} from "react-redux";
+import {selectUserList} from "../../../redux/features/users/userSlice";
 
 interface IProps {
     project: IProject
 }
 
 const CreateTaskForm : React.FC<IProps> = ({project}) => {
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(getUsersThunk())
+    }, [dispatch])
+    const usersList = useSelector(selectUserList())
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
-    const [responsibleEmailData, setResponsibleEmailData] = useState(['Jhon@gmail.om', 'Juan@gmai.com']);
+    const [, setResponsibleEmailData] = useState(['Jhon@gmail.om', 'Juan@gmai.com']);
     // map over the backend data to fill the selects' options
-    const responsableSelectData = []
+    const responsableSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
+
     const form = useForm({
         initialValues: {
             name: '',
@@ -43,6 +53,7 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
         e.preventDefault()
         console.log(form.values)
     }
+    console.log(project)
     return <>
         <Container size="xs" px="xs" my='xs'>
             <Text>Project id: {project?.id}</Text>
@@ -73,7 +84,7 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
                 <MultiSelect
                     required
                     label="Select members"
-                    data={responsibleEmailData}
+                    data={responsableSelectData}
                     placeholder="Select items"
                     searchable
                     creatable
