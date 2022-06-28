@@ -1,6 +1,6 @@
 import {fetchStatus} from "../projects/projectTypes";
 
-export interface IBugInitalState {
+export interface IBugInitialState {
     bugsList: IBug[]
     bugChosen: IBug
     error: string | null
