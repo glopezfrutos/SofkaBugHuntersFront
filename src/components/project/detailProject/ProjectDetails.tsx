@@ -1,23 +1,9 @@
 import * as React from "react"
 import {useState} from "react"
 import {IProject} from "../../../redux/features/projects/projectTypes";
-import {
-    Accordion,
-    ActionIcon,
-    Badge,
-    Container,
-    Group,
-    List,
-    Modal,
-    Stack,
-    Text,
-    TextInput,
-    Title
-} from "@mantine/core";
+import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text, Title} from "@mantine/core";
 import {Subtask, Trash} from "tabler-icons-react";
 import CreateTaskForm from "../../task/createTask/CreateTaskForm";
-import {useAppDispatch} from "../../../redux/app/store";
-import {deleteProjectThunk} from "../../../redux/features/projects/projectThunks";
 import DeleteProjectForm from "../deleteProject/DeleteProjectForm";
 
 interface IProps {
@@ -25,12 +11,10 @@ interface IProps {
 }
 
 const ProjectDetails: React.FC<IProps> = ({project}) => {
-    const dispatch = useAppDispatch()
     const [opened, setOpened] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const teamMembers = project?.teamEmails?.map(member => <List.Item key={member}>{member}</List.Item>)
     const owners = project?.owners?.map(owner => <List.Item key={owner}>{owner}</List.Item>)
-
 
 
     return <Container>
@@ -99,7 +83,7 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
             onClose={() => setOpenDelete(false)}
             title={`Are you sure you want to delete ${project.name}?`}
         >
-                <DeleteProjectForm project={project}/>
+            <DeleteProjectForm project={project}/>
         </Modal>
 
         <Stack my='lg' align="center" justify="flex-start" spacing="sm" sx={(theme) => ({

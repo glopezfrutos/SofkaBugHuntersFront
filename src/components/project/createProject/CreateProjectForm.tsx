@@ -1,4 +1,5 @@
 import * as React from "react"
+import {useEffect, useMemo} from "react"
 import {Button, Container, MultiSelect, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import dayjs from "dayjs";
@@ -8,12 +9,19 @@ import {useAppDispatch} from "../../../redux/app/store";
 import {postProjectsThunk} from "../../../redux/features/projects/projectThunks";
 import {formatDate} from "../../../utils/dateUtils";
 import {IProject} from "../../../redux/features/projects/projectTypes";
+import {getUsersThunk} from "../../../redux/features/users/userThunks";
+import {useSelector} from "react-redux";
+import {selectUserList} from "../../../redux/features/users/userSlice";
 
 interface IProps {
 }
 
 const CreateProjectForm: React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(getUsersThunk())
+    }, [dispatch])
+    const usersList = useSelector(selectUserList())
     const form = useForm({
         initialValues: {
             name: '',
@@ -24,8 +32,10 @@ const CreateProjectForm: React.FC<IProps> = () => {
         },
     })
     //load this state with the information from the backend
-    const [membersData, setMembersData] = React.useState(['Juan@gmail.com', 'Luis@gmail.com', 'Carlos@gmail.com']);
-    const [ownersData, setOwnersData] = React.useState(['Juan', 'Pablo', 'Luis']);
+    const [membersData, setMembersData] = React.useState([] as string[]);
+    const [ownersData, setOwnersData] = React.useState([] as string[]);
+    const membersSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
+    const ownersSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -90,7 +100,7 @@ const CreateProjectForm: React.FC<IProps> = () => {
                 <MultiSelect
                     required
                     label="Select members"
-                    data={membersData}
+                    data={membersSelectData}
                     placeholder="Select items"
                     searchable
                     creatable
@@ -101,7 +111,7 @@ const CreateProjectForm: React.FC<IProps> = () => {
                 <MultiSelect
                     required
                     label="Select owners"
-                    data={ownersData}
+                    data={ownersSelectData}
                     placeholder="Select items"
                     searchable
                     creatable

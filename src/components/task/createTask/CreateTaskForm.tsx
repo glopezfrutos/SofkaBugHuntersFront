@@ -3,13 +3,13 @@ import {useState} from "react"
 import {Button, Container, MultiSelect, Text, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
+import {IProject} from "../../../redux/features/projects/projectTypes";
 
 interface IProps {
-    projectId: string
-    projectName: string
+    project: IProject
 }
 
-const CreateTaskForm : React.FC<IProps> = ({projectId, projectName}) => {
+const CreateTaskForm : React.FC<IProps> = ({project}) => {
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
     const [responsibleEmailData, setResponsibleEmailData] = useState(['Jhon@gmail.om', 'Juan@gmai.com']);
@@ -45,7 +45,7 @@ const CreateTaskForm : React.FC<IProps> = ({projectId, projectName}) => {
     }
     return <>
         <Container size="xs" px="xs" my='xs'>
-            <Text>Project id: {projectId}</Text>
+            <Text>Project id: {project?.id}</Text>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <TextInput
                     placeholder="Task name"
