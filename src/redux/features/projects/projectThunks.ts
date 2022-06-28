@@ -12,6 +12,8 @@ const ENDPOINT = 'https://bughuntersback.herokuapp.com/api/v1/project/'
 export const getProjectsThunk = createAsyncThunk("get/projects",
     async () => {
         try {
+            const myHeaders = new Headers();
+            myHeaders.append('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem("user")).stsTokenManager.accessToken)
             const response = await fetch(ENDPOINT)
             if (response.ok) {
                 return await response.json() as IProject[]
