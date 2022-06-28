@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ITask, ITaskInitialState} from "./taskTypes";
 import {fetchStatus} from "../projects/projectTypes";
 import {RootState} from "../../app/store";
-import {getChildrenTasks, postTaskThunk} from "./taskThunks";
+import {getChildrenTasks, getTaskById, postTaskThunk} from "./taskThunks";
 
 
 const initialState: ITaskInitialState = {
@@ -23,6 +23,11 @@ const taskSlice = createSlice({
                 state.taskList = action.payload
                 state.fetchStatus = fetchStatus.FULFILLED
             }
+        })
+    //    GET single task
+        builder.addCase(getTaskById.fulfilled, (state, action: PayloadAction<ITask>) => {
+            state.taskChosen = action.payload
+            state.fetchStatus = fetchStatus.FULFILLED
         })
     //    POST task
         builder.addCase(postTaskThunk.fulfilled, (state, action) => {

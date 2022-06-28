@@ -32,7 +32,7 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
             closedAt: new Date(),
             responsableEmail: [] as string [],
             additionalFilesId: '',
-            tags: [] as string[]
+            tag: [] as string[]
         },
     })
 
@@ -100,7 +100,7 @@ const CreateTaskForm : React.FC<IProps> = ({project}) => {
                     creatable
                     getCreateLabel={(query) => `+ Create ${query}`}
                     onCreate={(query) => setTagsData((current) => [...current, query])}
-                    {...form.getInputProps('tags')}
+                    {...form.getInputProps('tag')}
                 />
                 <Textarea
                     placeholder="Links..."

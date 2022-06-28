@@ -5,6 +5,7 @@ import {MessageCircle, Photo, Settings} from "tabler-icons-react";
 interface IProps {}
 
 const TaskDetailTabs : React.FC<IProps> = () => {
+    //dispatch getTaskById
     return <>
         <Tabs>
             <Tabs.Tab label="Details" icon={<Photo size={14} />}>task tab details// add new bug modal form</Tabs.Tab>
