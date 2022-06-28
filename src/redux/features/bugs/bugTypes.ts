@@ -24,7 +24,7 @@ export interface IBug  {
     conclusion: string,
     globalIssues: string,
     references: string,
-    closedA: string,
+    closedAt: string,
     solutionResponsible: string,
     developerObservations: string
 }
