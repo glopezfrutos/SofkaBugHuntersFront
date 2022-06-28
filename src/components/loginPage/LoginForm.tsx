@@ -26,6 +26,7 @@ const LoginForm: React.FC<IProps> = () => {
                     // Signed in
                     const user = userCredential.user;
                     console.log(user)
+
                     //dispatch
                     //navigate
                 })

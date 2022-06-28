@@ -43,7 +43,6 @@ const data = [
     { icon: <Home size={16} />, color: 'blue', label: 'Home', path: '/dashboard' },
     { icon: <ClipboardText size={16} />, color: 'teal', label: 'New Project', path: 'add-project' },
     { icon: <Book2 size={16} />, color: 'blue', label: 'Projects', path: 'all-projects' },
-    { icon: <Subtask size={16} />, color: 'blue', label: 'New Task', path: 'add-task' },
     { icon: <Bug size={16} />, color: 'blue', label: 'New Bug', path: 'add-bug' },
 ];
 

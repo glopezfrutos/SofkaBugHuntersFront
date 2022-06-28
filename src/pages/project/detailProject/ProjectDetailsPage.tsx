@@ -1,12 +1,13 @@
 import * as React from "react"
-import DetailTabs from "../../../components/project/detailProject/DetailTabs";
+import ProjectDetailTabs from "../../../components/project/detailProject/ProjectDetailTabs";
+import {useParams} from "react-router-dom";
 
 interface IProps {
 }
 
 const ProjectDetailsPage: React.FC<IProps> = () => {
     return <>
-        <DetailTabs/>
+        <ProjectDetailTabs/>
     </>
 }
 

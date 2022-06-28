@@ -1,48 +1,52 @@
 import * as React from "react"
-import {Button, Container, MultiSelect, Select, Textarea, TextInput} from "@mantine/core";
+import {useState} from "react"
+import {Button, Container, MultiSelect, Text, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
-import {useState} from "react";
 
-interface IProps {}
+interface IProps {
+    projectId: string
+    projectName: string
+}
 
-const CreateTaskForm : React.FC<IProps> = () => {
+const CreateTaskForm : React.FC<IProps> = ({projectId, projectName}) => {
     //multiple select data
-    const [data, setData] = useState(['React', 'Angular', 'Svelte', 'Vue']);
+    const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
+    const [responsibleEmailData, setResponsibleEmailData] = useState(['Jhon@gmail.om', 'Juan@gmai.com']);
     // map over the backend data to fill the selects' options
-    const projectSelectData = []
     const responsableSelectData = []
     const form = useForm({
         initialValues: {
-            projectId: '',
             name: '',
             description: '',
-            endDate: new Date(),
-            responsableEmail: '',
+            closedAt: new Date(),
+            responsableEmail: [] as string [],
+            additionalFilesId: '',
             tags: [] as string[]
         },
     })
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        /*
+        {
+    "projectId": "123",
+    "projectName": "java",
+    "name": "create dto",
+    "createdAt": "2022-06-26",
+    "closedAt": "",
+    "tag": ["java", "programming"],
+    "description": "tarea de java",
+    "additionalFilesId": ["link1", "link2"],
+    "responsibleEmail": ["diego", "fer", "kelly"]
+}
+        * */
         e.preventDefault()
         console.log(form.values)
     }
     return <>
         <Container size="xs" px="xs" my='xs'>
+            <Text>Project id: {projectId}</Text>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <Select
-                    required
-                    label="Pick a project"
-                    placeholder="Project to add task to..."
-                    data={[
-                        { value: 'react', label: 'React' },
-                        { value: 'ng', label: 'Angular' },
-                        { value: 'svelte', label: 'Svelte' },
-                        { value: 'vue', label: 'Vue' },
-                    ]}
-                    {...form.getInputProps('projectId')}
-
-                />
                 <TextInput
                     placeholder="Task name"
                     label="Name"
@@ -63,30 +67,38 @@ const CreateTaskForm : React.FC<IProps> = () => {
                 <DatePicker
                     placeholder="Pick date"
                     label="End date"
-                    {...form.getInputProps('endDate')}
+                    {...form.getInputProps('closedAt')}
 
                 />
-                <Select
+                <MultiSelect
                     required
-                    label="Pick a responsable"
-                    placeholder="Pick one"
-                    data={[
-                        { value: 'react', label: 'React' },
-                        { value: 'ng', label: 'Angular' },
-                        { value: 'svelte', label: 'Svelte' },
-                        { value: 'vue', label: 'Vue' },
-                    ]}
+                    label="Select members"
+                    data={responsibleEmailData}
+                    placeholder="Select items"
+                    searchable
+                    creatable
                     {...form.getInputProps('responsableEmail')}
+                    getCreateLabel={(query) => `+ Create ${query}`}
+                    onCreate={(query) => setResponsibleEmailData((current) => [...current, query])}
                 />
                 <MultiSelect
                     label="Add some tags"
-                    data={data}
+                    data={tagsData}
                     placeholder="Select tags"
                     searchable
                     creatable
                     getCreateLabel={(query) => `+ Create ${query}`}
-                    onCreate={(query) => setData((current) => [...current, query])}
+                    onCreate={(query) => setTagsData((current) => [...current, query])}
                     {...form.getInputProps('tags')}
+                />
+                <Textarea
+                    placeholder="Links..."
+                    label="Extra documentation"
+                    autosize
+                    minRows={2}
+                    maxRows={4}
+                    maxLength={2000}
+                    {...form.getInputProps('additionalFilesId')}
                 />
                 <Button
                     color='blue'
