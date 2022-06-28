@@ -34,7 +34,7 @@ const LoginForm: React.FC<IProps> = () => {
                     console.log(user)
 
                     //dispatch
-                    localStorage.setItem("user", JSON.stringify(user));
+                    localStorage.setItem("email", JSON.stringify(user.email));
                     //navigate
                     navigate('/dashboard')
                 })
