@@ -1,15 +1,22 @@
 import * as React from "react"
-import {Button, Group, Paper, PasswordInput, TextInput} from "@mantine/core";
-import {useForm} from "@mantine/form";
+import { Button, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import LoginWithGoogle from "./LoginWithGoogle";
-import {signInWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../../firebaseConfig";
-import {showNotification} from "@mantine/notifications";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import { showNotification } from "@mantine/notifications";
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from "../../redux/app/store";
+import { postUserThunk } from "../../redux/features/users/userThunks";
+
 
 interface IProps {
 }
 
 const LoginForm: React.FC<IProps> = () => {
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+
     const form = useForm({
         initialValues: {
             email: '',
@@ -19,16 +26,18 @@ const LoginForm: React.FC<IProps> = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const {email, password} = form.values
+        const { email, password } = form.values
         if (email && password) {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
                     console.log(user)
-
                     //dispatch
+                    localStorage.setItem("email", user.email ? user.email : "");
+                    dispatch(postUserThunk(user.email ? user.email : ""))
                     //navigate
+                    navigate('/dashboard')
                 })
                 .catch((error) => {
                     console.log(error.message)
@@ -37,6 +46,7 @@ const LoginForm: React.FC<IProps> = () => {
                         title: 'Oops',
                         message: 'Some fields do not match, try again!',
                     })
+                    localStorage.removeItem('user');
                 });
         }
     }
@@ -60,7 +70,7 @@ const LoginForm: React.FC<IProps> = () => {
                     <Button color="cyan" type="submit" mt="xs">
                         Login
                     </Button>
-                    <LoginWithGoogle/>
+                    <LoginWithGoogle />
                 </Group>
             </form>
         </Paper>

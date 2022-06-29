@@ -1,12 +1,13 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 import {fetchStatus} from "../projects/projectTypes";
+import {getUsersThunk} from "./userThunks";
+import {IUser, IUserInitialState} from "./userTypes";
 
 
-
-
-const initialState  = {
-    projectList: [],
+const initialState: IUserInitialState  = {
+    usersList: [],
+    loggedUser: {} as IUser,
     fetchStatus: fetchStatus.IDLE,
     error: null
 }
@@ -16,7 +17,11 @@ const userSlice = createSlice({
     initialState,
     reducers:{},
     extraReducers: (builder) => {
-
+    //    GET
+        builder.addCase(getUsersThunk.fulfilled, (state, action: PayloadAction<IUser[]>) => {
+            state.usersList = action.payload
+            state.fetchStatus = fetchStatus.FULFILLED
+        })
     }
 })
 
@@ -24,6 +29,6 @@ const userSlice = createSlice({
 export default userSlice.reducer
 
 
-export const selectUserList = () => (state: RootState) => state.users.projectList
+export const selectUserList = () => (state: RootState) => state.users.usersList
 export const selectUserError = () => (state: RootState) => state.users.error
 export const selectUserFetchStatus = () => (state: RootState) => state.users.fetchStatus

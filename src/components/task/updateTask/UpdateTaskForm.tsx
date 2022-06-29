@@ -1,24 +1,23 @@
 import * as React from "react"
 import {useEffect, useMemo, useState} from "react"
-import {Button, Container, MultiSelect, Text, Textarea, TextInput} from "@mantine/core";
-import {DatePicker} from "@mantine/dates";
-import {useForm} from "@mantine/form";
-import {IProject} from "../../../redux/features/projects/projectTypes";
+import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
 import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
+import {useForm} from "@mantine/form";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
-import {ITask} from "../../../redux/features/tasks/taskTypes";
-import {postTaskThunk} from "../../../redux/features/tasks/taskThunks";
+import {putTaskThunk} from "../../../redux/features/tasks/taskThunks";
 import {showNotification} from "@mantine/notifications";
+import {Button, Container, MultiSelect, Select, Text, Textarea, TextInput} from "@mantine/core";
+import {DatePicker} from "@mantine/dates";
 
 interface IProps {
-    project: IProject
+    task: ITask
 }
 
-const CreateTaskForm: React.FC<IProps> = ({project}) => {
+const UpdateTaskForm : React.FC<IProps> = ({task}) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getUsersThunk())
@@ -27,45 +26,47 @@ const CreateTaskForm: React.FC<IProps> = ({project}) => {
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
     const [, setResponsibleEmailData] = useState([] as string[]);
-    const [additionalFilesData, setAdditionalFilesData] = useState([] as string[])
+    const [additionalFilesData, setAdditionalFilesData] = useState(task.additionalFilesId)
     // map over the backend data to fill the selects' options
     const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
 
     const form = useForm({
         initialValues: {
-            name: '',
-            description: '',
+            name: task.name,
+            description: task.description,
             closedAt: new Date(),
-            responsibleEmail: [] as string[],
-            additionalFilesId: [] as string[],
-            tag: [] as string[]
+            responsibleEmail: task.responsibleEmail,
+            additionalFilesId: task.additionalFilesId,
+            tag: task.tag,
+            status: task.status
         },
     })
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const {name, description, responsibleEmail, closedAt, additionalFilesId, tag} = form.values
-        const areValid = [name, description].every(Boolean)
+        const {name, description, responsibleEmail, closedAt, additionalFilesId, tag, status} = form.values
+        const areValid = [name, description, status].every(Boolean)
         const responsibleLength = responsibleEmail.length
         const isBefore = dayjs().isBefore(dayjs(closedAt))
         if (areValid && responsibleLength) {
-            const checkDate = isBefore ? formatDate(closedAt) : ''
-            const newTask: ITask = {
+            const checkDate = isBefore ? formatDate(closedAt) : task.closedAt
+            const taskToUpdate: ITask = {
                 name,
                 description,
                 tag,
                 closedAt: checkDate,
                 createdAt: formatDate(new Date()),
-                projectId: project.id!,
-                projectName: project.name,
+                projectId: task.projectId,
+                projectName: task.projectName,
                 additionalFilesId,
                 responsibleEmail,
+                status
             }
-            dispatch(postTaskThunk(newTask))
+            dispatch(putTaskThunk(taskToUpdate))
             showNotification({
-                title: 'Task added successfully',
-                message: 'The task was saved!',
+                title: 'Task updated successfully',
+                message: 'The task was updated!',
             })
             form.reset()
             return
@@ -73,12 +74,12 @@ const CreateTaskForm: React.FC<IProps> = ({project}) => {
         showNotification({
             title: 'There is an error on the form!',
             color: 'red',
-            message: 'Check if the date is correct...',
+            message: 'Check if the fields are correct...',
         })
     }
     return <>
         <Container size="xs" px="xs" my='xs'>
-            <Text>Project id: {project?.id}</Text>
+            <Text>Project id: {task.projectId}</Text>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <TextInput
                     placeholder="Task name"
@@ -135,6 +136,18 @@ const CreateTaskForm: React.FC<IProps> = ({project}) => {
                     onCreate={(query) => setAdditionalFilesData((current) => [...current, query])}
                     {...form.getInputProps('additionalFilesId')}
                 />
+                <Select
+                    required
+                    label="Task status"
+                    placeholder="Pick one"
+                    data={[
+                        {value: 'CREATED', label: 'Created'},
+                        {value: 'OPENED', label: 'Opened'},
+                        {value: 'CLOSED', label: 'Closed'},
+                        {value: 'IMPEDED', label: 'Impeded'},
+                    ]}
+                    {...form.getInputProps('status')}
+                />
                 <Button
                     color='blue'
                     radius='lg'
@@ -146,6 +159,6 @@ const CreateTaskForm: React.FC<IProps> = ({project}) => {
     </>
 }
 
-export default CreateTaskForm
+export default UpdateTaskForm
 
 

@@ -1,49 +1,49 @@
 import * as React from "react"
 import {useState} from "react"
-import {Button, TextInput} from "@mantine/core";
-import {IProject} from "../../../redux/features/projects/projectTypes";
-import {deleteProjectThunk} from "../../../redux/features/projects/projectThunks";
+import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useNavigate} from "react-router-dom";
 import {showNotification} from "@mantine/notifications";
+import {Button, TextInput} from "@mantine/core";
+import {deleteTaskById} from "../../../redux/features/tasks/taskThunks";
 
 interface IProps {
-    project: IProject
+    task: ITask
 }
 
-const DeleteProjectForm: React.FC<IProps> = ({project}) => {
+const DeleteTaskForm : React.FC<IProps> = ({task}) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const [projectName, setProjectName] = useState("")
+    const [taskName, setTaskName] = useState("")
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
-        if (projectName === project.name) {
+        if (taskName === task.name) {
             console.log("dispatch delete")
-            dispatch(deleteProjectThunk(id))
+            dispatch(deleteTaskById(id))
             navigate("/dashboard")
             showNotification({
                 title: 'Project removed successfully',
-                message: `The project ${project.name} was deleted!`,
+                message: `The project ${task.name} was deleted!`,
             })
         }
 
     }
     return <>
-        <form onSubmit={(e) => handleSubmit(e, project.id!)}>
+        <form onSubmit={(e) => handleSubmit(e, task.id!)}>
             <TextInput
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
+                value={taskName}
+                onChange={(e) => setTaskName(e.target.value)}
                 placeholder='Type project name to confirm'
             />
             {
-                projectName === project.name &&
+                taskName === task.name &&
                 <Button type='submit' color='red' mt='md'>Confirm</Button>
             }
         </form>
     </>
 }
 
-export default DeleteProjectForm
+export default DeleteTaskForm
 
 
