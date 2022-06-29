@@ -13,7 +13,6 @@ export const postUserThunk = createAsyncThunk("post/user",
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
                 },
                 body: JSON.stringify({ email: userEmail })
             })
