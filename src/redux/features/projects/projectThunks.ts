@@ -1,6 +1,6 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {IProject} from "./projectTypes";
-import {HEADERS, HttpMethod} from "../../general/generalTypes";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { IProject } from "./projectTypes";
+import { HEADERS, HttpMethod } from "../../general/generalTypes";
 
 const ENDPOINT = 'http://localhost:8081/api/v1/project/'
 
@@ -9,15 +9,14 @@ const ENDPOINT = 'http://localhost:8081/api/v1/project/'
 //     error: null | string
 // }
 
-const email = "" + localStorage.getItem("email");
 
 export const getProjectsThunk = createAsyncThunk("get/projects",
     async () => {
         try {
-            console.log(email)
             const myHeaders = new Headers();
-            myHeaders.append('Authorization', 'Basic ' +window.btoa(email + ':' +email))//Buffer.from(email + ":" + email).toString('base64'))
-            const response = await fetch(ENDPOINT,{headers:myHeaders})
+            myHeaders.append('Authorization',
+                'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email")))
+            const response = await fetch(ENDPOINT, { headers: myHeaders })
             if (response.ok) {
                 return await response.json() as IProject[]
             }
