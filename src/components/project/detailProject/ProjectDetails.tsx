@@ -5,6 +5,7 @@ import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text
 import {Subtask, Trash} from "tabler-icons-react";
 import CreateTaskForm from "../../task/createTask/CreateTaskForm";
 import DeleteProjectForm from "../deleteProject/DeleteProjectForm";
+import DisplayDates from "../../mantine/DisplayDates";
 
 interface IProps {
     project: IProject
@@ -86,16 +87,7 @@ const ProjectDetails: React.FC<IProps> = ({project}) => {
             <DeleteProjectForm project={project}/>
         </Modal>
 
-        <Stack my='lg' align="center" justify="flex-start" spacing="sm" sx={(theme) => ({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-            height: 300
-        })}>
-            <Text>Created at: {project.createdAt}</Text>
-            {
-                project.closedAt &&
-                <Text>Closed at: {project.closedAt}</Text>
-            }
-        </Stack>
+        <DisplayDates createdAt={project.createdAt}  closedAt={project.closedAt}/>
     </Container>
 }
 

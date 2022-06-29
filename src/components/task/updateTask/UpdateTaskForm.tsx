@@ -50,7 +50,7 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
         const responsibleLength = responsibleEmail.length
         const isBefore = dayjs().isBefore(dayjs(closedAt))
         if (areValid && responsibleLength) {
-            const checkDate = isBefore ? formatDate(closedAt) : ''
+            const checkDate = isBefore ? formatDate(closedAt) : task.closedAt
             const taskToUpdate: ITask = {
                 name,
                 description,
@@ -138,14 +138,13 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
                 />
                 <Select
                     required
-                    label="Project status"
+                    label="Task status"
                     placeholder="Pick one"
                     data={[
                         {value: 'CREATED', label: 'Created'},
-                        {value: 'ACTIVE', label: 'Active'},
-                        {value: 'CANCELLED', label: 'Cancelled'},
-                        {value: 'PAUSED', label: 'Paused'},
-                        {value: 'FINISHED', label: 'Finished'},
+                        {value: 'OPENED', label: 'Opened'},
+                        {value: 'CLOSED', label: 'Closed'},
+                        {value: 'IMPEDED', label: 'Impeded'},
                     ]}
                     {...form.getInputProps('status')}
                 />
