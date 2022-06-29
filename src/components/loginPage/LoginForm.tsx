@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { showNotification } from "@mantine/notifications";
 import { useNavigate } from 'react-router-dom';
-import {useAppDispatch} from "../../redux/app/store";
+import { useAppDispatch } from "../../redux/app/store";
 import { postUserThunk } from "../../redux/features/users/userThunks";
 
 
@@ -33,11 +33,9 @@ const LoginForm: React.FC<IProps> = () => {
                     // Signed in
                     const user = userCredential.user;
                     console.log(user)
-
                     //dispatch
-                    localStorage.setItem("email", JSON.stringify(user.email));
-                    let userEmail = ""+user.email
-                    dispatch(postUserThunk(userEmail))
+                    localStorage.setItem("email", user.email ? user.email : "");
+                    dispatch(postUserThunk(user.email ? user.email : ""))
                     //navigate
                     navigate('/dashboard')
                 })

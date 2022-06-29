@@ -1,16 +1,21 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import { HEADERS, HttpMethod } from "../../general/generalTypes";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { HttpMethod } from "../../general/generalTypes";
+import { url } from "../../general/url";
 import { IUser } from "./userTypes";
 
-const ENDPOINT = 'https://bughuntersback.herokuapp.com/api/v1/user/'
+const ENDPOINT = url + '/api/v1/user/'
 
 export const postUserThunk = createAsyncThunk("post/user",
     async (userEmail: string) => {
         try {
             const response = await fetch(ENDPOINT, {
                 method: HttpMethod.POST,
-                headers: HEADERS,
-                body: JSON.stringify({email: userEmail})
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                },
+                body: JSON.stringify({ email: userEmail })
             })
             if (response.ok) {
                 return await response.json() as IUser
@@ -24,7 +29,11 @@ export const postUserThunk = createAsyncThunk("post/user",
 
 export const getUsersThunk = createAsyncThunk("get/users",
     async () => {
-        const response = await fetch(ENDPOINT)
+        const response = await fetch(ENDPOINT, {
+            headers: {
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+            }
+        })
         return await response.json() as IUser[]
     }
 )
