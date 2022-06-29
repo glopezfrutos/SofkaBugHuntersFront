@@ -20,21 +20,31 @@ export const getChildrenTasks = createAsyncThunk("get/childrenTask",
 )
 
 export const getTaskById = createAsyncThunk('get/taskById',
-        async (taskId: string) => {
-            const response = await fetch(`${TASK_ENDPOINT}${taskId}`)
-            return await response.json() as ITask
-        }
-    )
+    async (taskId: string) => {
+        const response = await fetch(`${TASK_ENDPOINT}${taskId}`)
+        return await response.json() as ITask
+    }
+)
 
+export const deleteTaskById = createAsyncThunk('delete/task',
+    async (taskId: string) => {
+        const response = await fetch(`${TASK_ENDPOINT}${taskId}`, {
+            method: HttpMethod.DELETE,
+            headers: HEADERS,
+        })
+        if (response.ok) {
+            return taskId
+        }
+    }
+)
 
 export const postTaskThunk = createAsyncThunk('post/task',
-        async (task: ITask) => {
-            const response = await fetch(TASK_ENDPOINT, {
-                headers: HEADERS,
-                method: HttpMethod.POST,
-                body: JSON.stringify(task)
-            })
-            return await response.json() as ITask
-        }
-
-    )
+    async (task: ITask) => {
+        const response = await fetch(TASK_ENDPOINT, {
+            headers: HEADERS,
+            method: HttpMethod.POST,
+            body: JSON.stringify(task)
+        })
+        return await response.json() as ITask
+    }
+)

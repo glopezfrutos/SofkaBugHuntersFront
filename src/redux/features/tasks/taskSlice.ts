@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ITask, ITaskInitialState} from "./taskTypes";
 import {fetchStatus} from "../projects/projectTypes";
 import {RootState} from "../../app/store";
-import {getChildrenTasks, getTaskById, postTaskThunk} from "./taskThunks";
+import {deleteTaskById, getChildrenTasks, getTaskById, postTaskThunk} from "./taskThunks";
 
 
 const initialState: ITaskInitialState = {
@@ -33,6 +33,13 @@ const taskSlice = createSlice({
         builder.addCase(postTaskThunk.fulfilled, (state, action) => {
             state.taskList.push(action.payload)
             state.fetchStatus = fetchStatus.FULFILLED
+        })
+    //    DELETE task by id
+        builder.addCase(deleteTaskById.fulfilled, (state, action:PayloadAction<string| undefined>) => {
+            if (action.payload) {
+                state.taskList = state.taskList.filter(task => task.id !== action.payload)
+                state.fetchStatus = fetchStatus.FULFILLED
+            }
         })
     }
 })

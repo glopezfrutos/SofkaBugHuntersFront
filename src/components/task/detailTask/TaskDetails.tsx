@@ -1,19 +1,20 @@
 import * as React from "react"
 import {ITask} from "../../../redux/features/tasks/taskTypes";
-import {Accordion, Badge, Container, Group, List, Stack, Text, Title} from "@mantine/core";
+import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text, Title} from "@mantine/core";
+import {Bug, Subtask, Trash} from "tabler-icons-react";
+import CreateTaskForm from "../createTask/CreateTaskForm";
+import DeleteProjectForm from "../../project/deleteProject/DeleteProjectForm";
+import {useState} from "react";
+import BugForm from "../../bug/createBug/BugForm";
+import DeleteTaskForm from "../deleteTask/DeleteTaskForm";
 
 interface IProps {
     task: ITask
 }
 
 const TaskDetails: React.FC<IProps> = ({task}) => {
-    /*
-    {
-
-    "additionalFilesId": ["link1", "link2"],
-    "responsibleEmail": ["diego", "fer", "kelly"]
-}
-    * */
+    const [opened, setOpened] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const additionalFiles = task?.additionalFilesId?.map(file => <List.Item key={file}>{file}</List.Item>)
     const responsibleEmails = task?.responsibleEmail?.map(responsible => <List.Item
         key={responsible}>{responsible}</List.Item>)
@@ -44,7 +45,7 @@ const TaskDetails: React.FC<IProps> = ({task}) => {
                 </List>
             </Container>
             <Container>
-                {additionalFiles.length &&
+                {additionalFiles?.length &&
                     <>
                         <Text>Files:</Text>
                         <List>
@@ -54,6 +55,39 @@ const TaskDetails: React.FC<IProps> = ({task}) => {
                 }
             </Container>
         </Group>
+
+        <Group my='md'>
+            <Container>
+                <Text>Add a bug</Text>
+                <ActionIcon color='teal' onClick={() => setOpened(true)}>
+                    <Bug/>
+                </ActionIcon>
+            </Container>
+            <Container>
+                <Text>Delete task</Text>
+                <ActionIcon color='red' onClick={() => setOpenDelete(true)}>
+                    <Trash/>
+                </ActionIcon>
+            </Container>
+        </Group>
+        <Modal
+            size='md'
+            opened={opened}
+            onClose={() => setOpened(false)}
+            title={`Adding new bug to ${task.name}`}
+        >
+            <BugForm/>
+        </Modal>
+
+        <Modal
+            size='md'
+            opened={openDelete}
+            onClose={() => setOpenDelete(false)}
+            title={`Are you sure you want to delete ${task.name}?`}
+        >
+            <DeleteTaskForm task={task}/>
+        </Modal>
+
 
         <Container my='md'>
             {task.tag && <Text color='dimmed'>Tags: {tags}</Text>}
