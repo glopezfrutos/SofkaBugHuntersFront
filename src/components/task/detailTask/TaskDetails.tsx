@@ -73,7 +73,7 @@ const TaskDetails: React.FC<IProps> = ({task}) => {
             onClose={() => setOpened(false)}
             title={`Adding new bug to ${task.name}`}
         >
-            <BugForm/>
+            <BugForm task={task}/>
         </Modal>
 
         <Modal

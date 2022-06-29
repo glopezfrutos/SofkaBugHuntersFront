@@ -11,7 +11,6 @@ import {selectUserList} from "../../../redux/features/users/userSlice";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
 import {ITask} from "../../../redux/features/tasks/taskTypes";
-import {formatTextToArray} from "../../../utils/textUtils";
 import {postTaskThunk} from "../../../redux/features/tasks/taskThunks";
 import {showNotification} from "@mantine/notifications";
 
@@ -63,7 +62,6 @@ const CreateTaskForm: React.FC<IProps> = ({project}) => {
                 additionalFilesId,
                 responsibleEmail,
             }
-            console.log(newTask)
             dispatch(postTaskThunk(newTask))
             showNotification({
                 title: 'Task added successfully',

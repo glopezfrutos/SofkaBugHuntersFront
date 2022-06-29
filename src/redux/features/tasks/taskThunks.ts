@@ -48,3 +48,15 @@ export const postTaskThunk = createAsyncThunk('post/task',
         return await response.json() as ITask
     }
 )
+
+
+export const putTaskThunk = createAsyncThunk('put/task',
+    async (task: ITask) => {
+        const response = await fetch(TASK_ENDPOINT, {
+            headers: HEADERS,
+            method: HttpMethod.PUT,
+            body: JSON.stringify(task)
+        })
+        return await response.json() as ITask
+    }
+)
