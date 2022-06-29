@@ -7,7 +7,7 @@ export interface IUserInitialState  {
 }
 
 export interface IUser {
-    id: string
+    id?: string
     email: string
-    rol: string // Enum: ADMIN, TESTER, DEVELOPER, READER (default);
+    rol?: string // Enum: ADMIN, TESTER, DEVELOPER, READER (default);
 }

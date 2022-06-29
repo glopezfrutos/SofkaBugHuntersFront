@@ -6,14 +6,15 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { showNotification } from "@mantine/notifications";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {useAppDispatch} from "../../redux/app/store";
+import { postUserThunk } from "../../redux/features/users/userThunks";
 
 
 interface IProps {
 }
 
 const LoginForm: React.FC<IProps> = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate();
 
     const form = useForm({
@@ -34,7 +35,9 @@ const LoginForm: React.FC<IProps> = () => {
                     console.log(user)
 
                     //dispatch
-                    localStorage.setItem("user", JSON.stringify(user));
+                    localStorage.setItem("email", JSON.stringify(user.email));
+                    let userEmail = ""+user.email
+                    dispatch(postUserThunk(userEmail))
                     //navigate
                     navigate('/dashboard')
                 })
