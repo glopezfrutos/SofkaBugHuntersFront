@@ -2,11 +2,16 @@ import * as React from "react"
 import {Button, Container, Select, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
+import {ITask} from "../../../redux/features/tasks/taskTypes";
 
 interface IProps {
+    task: ITask
 }
 
-const BugForm: React.FC<IProps> = () => {
+const BugForm: React.FC<IProps> = ({task}) => {
+    //select the users
+    // map to form a selectData
+
     const form = useForm({
         initialValues: {
             title: '',
@@ -36,18 +41,6 @@ const BugForm: React.FC<IProps> = () => {
     return <>
         <Container size="xs" px="xs" my='xs'>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <Select
-                    required
-                    label="Pick a task"
-                    placeholder="Task to add bug to..."
-                    data={[
-                        {value: 'react', label: 'React'},
-                        {value: 'ng', label: 'Angular'},
-                        {value: 'svelte', label: 'Svelte'},
-                        {value: 'vue', label: 'Vue'},
-                    ]}
-                    {...form.getInputProps('taskId')}
-                />
                 <TextInput
                     placeholder="Bug title"
                     label="Title"

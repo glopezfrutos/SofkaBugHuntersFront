@@ -5,6 +5,7 @@ import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text
 import {Bug, Trash} from "tabler-icons-react";
 import BugForm from "../../bug/createBug/BugForm";
 import DeleteTaskForm from "../deleteTask/DeleteTaskForm";
+import DisplayDates from "../../mantine/DisplayDates";
 
 interface IProps {
     task: ITask
@@ -73,7 +74,7 @@ const TaskDetails: React.FC<IProps> = ({task}) => {
             onClose={() => setOpened(false)}
             title={`Adding new bug to ${task.name}`}
         >
-            <BugForm/>
+            <BugForm task={task}/>
         </Modal>
 
         <Modal
@@ -89,13 +90,7 @@ const TaskDetails: React.FC<IProps> = ({task}) => {
         <Container my='md'>
             {task.tag && <Text color='dimmed'>Tags: {tags}</Text>}
         </Container>
-        <Stack my='lg' align="center" justify="flex-start" spacing="sm" sx={(theme) => ({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-            height: 300
-        })}>
-            <Text>Created at: {task.createdAt}</Text>
-            {task.closedAt && <Text>Closed at: {task.closedAt}</Text>}
-        </Stack>
+       <DisplayDates createdAt={task.createdAt} closedAt={task.closedAt}/>
     </Container>
 }
 

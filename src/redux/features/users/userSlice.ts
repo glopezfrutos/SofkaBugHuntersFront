@@ -5,10 +5,9 @@ import {getUsersThunk} from "./userThunks";
 import {IUser, IUserInitialState} from "./userTypes";
 
 
-
-
 const initialState: IUserInitialState  = {
     usersList: [],
+    loggedUser: {} as IUser,
     fetchStatus: fetchStatus.IDLE,
     error: null
 }

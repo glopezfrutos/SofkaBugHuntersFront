@@ -2,6 +2,7 @@ import {fetchStatus} from "../projects/projectTypes";
 
 export interface IUserInitialState  {
     usersList: IUser[]
+    loggedUser: IUser
     fetchStatus : fetchStatus
     error: null | string
 }
