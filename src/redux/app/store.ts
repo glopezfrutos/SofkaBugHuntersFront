@@ -3,12 +3,14 @@ import {useDispatch} from "react-redux";
 import projectReducer from "../features/projects/projectSlice";
 import userReducer from "../features/users/userSlice";
 import taskReducer from "../features/tasks/taskSlice";
+import bugReducer from "../features/bugs/bugSlice";
 
 export const store =configureStore({
     reducer: {
         projects: projectReducer,
         users: userReducer,
         task: taskReducer,
+        bug: bugReducer,
     }
 })
 

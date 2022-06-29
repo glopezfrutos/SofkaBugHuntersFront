@@ -1,22 +1,23 @@
 import * as React from "react"
 import {useEffect, useMemo} from "react"
-import {Button, Container, MultiSelect, Textarea, TextInput} from "@mantine/core";
-import {DatePicker} from "@mantine/dates";
-import dayjs from "dayjs";
-import {useForm} from "@mantine/form";
-import {showNotification} from "@mantine/notifications";
-import {useAppDispatch} from "../../../redux/app/store";
-import {postProjectsThunk} from "../../../redux/features/projects/projectThunks";
-import {formatDate} from "../../../utils/dateUtils";
 import {IProject} from "../../../redux/features/projects/projectTypes";
+import {Button, Container, MultiSelect, Select, Textarea, TextInput} from "@mantine/core";
+import {DatePicker} from "@mantine/dates";
+import {useAppDispatch} from "../../../redux/app/store";
 import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
+import {useForm} from "@mantine/form";
+import dayjs from "dayjs";
+import {formatDate} from "../../../utils/dateUtils";
+import {putProjectsThunk} from "../../../redux/features/projects/projectThunks";
+import {showNotification} from "@mantine/notifications";
 
 interface IProps {
+    project: IProject
 }
 
-const CreateProjectForm: React.FC<IProps> = () => {
+const UpdateProjectForm : React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getUsersThunk())
@@ -24,11 +25,12 @@ const CreateProjectForm: React.FC<IProps> = () => {
     const usersList = useSelector(selectUserList())
     const form = useForm({
         initialValues: {
-            name: '',
-            description: '',
+            name: project.name,
+            description: project.description,
             closedAt: new Date(),
-            teamEmails: [] as string[],
-            owners: [] as string[],
+            teamEmails: project.teamEmails,
+            owners: project.owners,
+            status: project.status
         },
     })
     //load this state with the information from the backend
@@ -39,25 +41,27 @@ const CreateProjectForm: React.FC<IProps> = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const {name, description, owners, teamEmails, closedAt} = form.values
-        const valid = [name, description].every(Boolean)
+        const {name, description, owners, teamEmails, closedAt, status} = form.values
+        const valid = [name, description,status].every(Boolean)
         const membersLength = teamEmails.length && owners.length
         const isBefore = dayjs().isBefore(dayjs(closedAt))
 
         if (valid && membersLength) {
             const checkDate = isBefore ? formatDate(closedAt) : ''
             const newProject: IProject = {
+                id: project.id,
                 name,
                 description,
                 teamEmails,
                 owners,
-                createdAt: formatDate(new Date()),
-                closedAt: checkDate
+                createdAt: project.createdAt,
+                closedAt: checkDate,
+                status
             }
-            dispatch(postProjectsThunk(newProject))
+            dispatch(putProjectsThunk(newProject))
             showNotification({
-                title: 'Project added successfully',
-                message: 'The project was saved!',
+                title: 'Project updated successfully',
+                message: 'The project was updated!',
             })
             form.reset()
             return
@@ -118,6 +122,19 @@ const CreateProjectForm: React.FC<IProps> = () => {
                     getCreateLabel={(query) => `+ Create ${query}`}
                     onCreate={(query) => setOwnersData((current) => [...current, query])}
                 />
+                <Select
+                    required
+                    label="Project status"
+                    placeholder="Pick one"
+                    data={[
+                        {value: 'CREATED', label: 'Created'},
+                        {value: 'ACTIVE', label: 'Active'},
+                        {value: 'CANCELLED', label: 'Cancelled'},
+                        {value: 'PAUSED', label: 'Paused'},
+                        {value: 'FINISHED', label: 'Finished'},
+                    ]}
+                    {...form.getInputProps('status')}
+                />
                 <Button
                     color='blue'
                     radius='lg'
@@ -129,6 +146,6 @@ const CreateProjectForm: React.FC<IProps> = () => {
     </>
 }
 
-export default CreateProjectForm
+export default UpdateProjectForm
 
 

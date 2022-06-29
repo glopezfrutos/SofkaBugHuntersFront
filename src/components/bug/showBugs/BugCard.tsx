@@ -1,46 +1,47 @@
 import * as React from "react"
+import {IBug} from "../../../redux/features/bugs/bugTypes";
 import {Anchor, Badge, Card, Grid, Group, Text, Title, useMantineTheme} from "@mantine/core";
 import {Link} from "react-router-dom";
-import {ITask} from "../../../redux/features/tasks/taskTypes";
 
 interface IProps {
-    task: ITask
+    bug: IBug
 }
 
-const TaskCard: React.FC<IProps> = ({task}) => {
+const BugCard : React.FC<IProps> = ({bug}) => {
     const theme = useMantineTheme();
     const secondaryColor = theme.colorScheme === 'dark'
         ? theme.colors.dark[1]
         : theme.colors.gray[7]
 
-    const path = `/dashboard/project/${task.projectId}/task/${task.id}`
+    //path='project/:projectId/task/:taskId/bug/:bugId'
+    const path = `/dashboard/project/${bug.projectId}/task/${bug.taskId}/bug/${bug.id}`
     return <Grid.Col md={4} xl={3}>
         <Card shadow="sm" p="lg">
             <Group>
-                <Anchor component={Link} to={path}>{task.id}</Anchor>
-                <Title order={4} align='center'>{task.name}</Title>
+                <Anchor component={Link} to={path}>{bug.id}</Anchor>
+                <Title order={4} align='center'>{bug.title}</Title>
             </Group>
 
-            <Text>Responsable: {task.responsibleEmail}</Text>
+            <Text>Responsable: {bug.responsible}</Text>
 
             <Group style={{marginBottom: 5, marginTop: theme.spacing.sm}}>
                 <Badge color="green" radius="sm" variant="filled">
-                    {task.status}
+                    {bug.status}
                 </Badge>
             </Group>
 
             <Group>
                 <Text size="sm" style={{color: secondaryColor, lineHeight: 1.5}}>
-                    Created at: {task.createdAt}
+                    Created at: {bug.createdAt}
                 </Text>
                 <Text size="sm" style={{color: secondaryColor, lineHeight: 1.5}}>
-                    Closed at: {task.closedAt}
+                    Closed at: {bug.closedAt}
                 </Text>
             </Group>
         </Card>
     </Grid.Col>
 }
 
-export default TaskCard
+export default BugCard
 
 
