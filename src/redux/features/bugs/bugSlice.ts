@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IBug, IBugInitialState} from "./bugTypes";
 import {fetchStatus} from "../projects/projectTypes";
-import {getChildrenBugs} from "./bugThunks";
+import {getBugById, getChildrenBugs} from "./bugThunks";
 import {RootState} from "../../app/store";
 
 
@@ -17,16 +17,20 @@ const bugSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-    //    get bugs children
-        builder.addCase(getChildrenBugs.fulfilled, (state, action:PayloadAction<IBug[]>) => {
+        //    get bugs children
+        builder.addCase(getChildrenBugs.fulfilled, (state, action: PayloadAction<IBug[]>) => {
             state.bugsList = action.payload
+            state.fetchStatus = fetchStatus.FULFILLED
+        })
+        //    get one bug by id
+        builder.addCase(getBugById.fulfilled, (state, action: PayloadAction<IBug>) => {
+            state.bugChosen = action.payload
             state.fetchStatus = fetchStatus.FULFILLED
         })
     }
 })
 
 export default bugSlice.reducer
-
 
 
 //selectors

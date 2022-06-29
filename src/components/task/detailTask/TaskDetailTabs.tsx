@@ -11,7 +11,6 @@ import {selectTaskChosen} from "../../../redux/features/tasks/taskSlice";
 import {selectBugList} from "../../../redux/features/bugs/bugSlice";
 import TaskDetails from "./TaskDetails";
 import BugList from "../../bug/showBugs/BugList";
-import bugList from "../../bug/showBugs/BugList";
 import UpdateTaskForm from "../updateTask/UpdateTaskForm";
 
 interface IProps {
