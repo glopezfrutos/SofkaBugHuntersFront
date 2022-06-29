@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IProject } from "./projectTypes";
-import { HEADERS, HttpMethod } from "../../general/generalTypes";
+import { HttpMethod } from "../../general/generalTypes";
+import { url } from "../../general/url";
 
-const ENDPOINT = 'http://localhost:8081/api/v1/project/'
+const ENDPOINT = url + '/api/v1/project/'
 
 // export interface IResponse {
 //     data: IProject[]
@@ -13,10 +14,11 @@ const ENDPOINT = 'http://localhost:8081/api/v1/project/'
 export const getProjectsThunk = createAsyncThunk("get/projects",
     async () => {
         try {
-            const myHeaders = new Headers();
-            myHeaders.append('Authorization',
-                'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email")))
-            const response = await fetch(ENDPOINT, { headers: myHeaders })
+            const response = await fetch(ENDPOINT, {
+                headers: {
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                }
+            })
             if (response.ok) {
                 return await response.json() as IProject[]
             }
@@ -30,7 +32,11 @@ export const getProjectsThunk = createAsyncThunk("get/projects",
 export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
     async (projectId: string) => {
         try {
-            const response = await fetch(`${ENDPOINT}${projectId}`)
+            const response = await fetch(`${ENDPOINT}${projectId}`, {
+                headers: {
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                }
+            })
             if (response.ok) {
                 return await response.json() as IProject
             }
@@ -46,7 +52,11 @@ export const postProjectsThunk = createAsyncThunk("post/project",
         try {
             const response = await fetch(ENDPOINT, {
                 method: HttpMethod.POST,
-                headers: HEADERS,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                },
                 body: JSON.stringify(project)
             })
             if (response.ok) {
@@ -65,7 +75,11 @@ export const putProjectsThunk = createAsyncThunk("put/project",
         try {
             const response = await fetch(ENDPOINT, {
                 method: HttpMethod.PUT,
-                headers: HEADERS,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                },
                 body: JSON.stringify(project)
             })
             if (response.ok) {
@@ -83,7 +97,11 @@ export const deleteProjectThunk = createAsyncThunk("delete/project",
         try {
             const response = await fetch(`${ENDPOINT}${projectId}`, {
                 method: HttpMethod.DELETE,
-                headers: HEADERS,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                },
             })
             if (response.ok) {
                 return projectId
