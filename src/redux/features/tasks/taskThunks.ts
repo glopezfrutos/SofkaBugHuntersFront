@@ -12,7 +12,7 @@ export const getChildrenTasks = createAsyncThunk("get/childrenTask",
             if (response.ok) {
                 return await response.json() as ITask[]
             }
-            throw new Error(response.statusText)
+            // throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
         }

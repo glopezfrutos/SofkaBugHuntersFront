@@ -6,7 +6,6 @@ import AddProject from "../pages/project/createProject/AddProject";
 import ProjectCharts from "../pages/chartsProject/ProjectCharts";
 import ProjectsPage from "../pages/project/allProjects/ProjectsPage";
 import ProjectDetailsPage from "../pages/project/detailProject/ProjectDetailsPage";
-import AddBugPage from "../pages/bug/createBug/AddBugPage";
 import TaskDetailsPage from "../pages/task/detailTask/TaskDetailsPage";
 import BugDetailsPage from "../pages/bug/detailBug/BugDetailsPage";
 
@@ -25,7 +24,6 @@ const AppRoutes: React.FC<IProps> = () => {
                 <Route path='project/:projectId' element={<ProjectDetailsPage/>}/>
                 <Route path='project/:projectId/task/:taskId' element={<TaskDetailsPage/>}/>
                 <Route path='project/:projectId/task/:taskId/bug/:bugId' element={<BugDetailsPage/>}/>
-                <Route path='add-bug' element={<AddBugPage/>}/>
             </Route>
             {/*<Route path='*' element={<PageNotFound/>}/>*/}
         </Routes>

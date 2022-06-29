@@ -1,10 +1,8 @@
 import * as React from "react"
+import {useState} from "react"
 import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {Accordion, ActionIcon, Badge, Container, Group, List, Modal, Stack, Text, Title} from "@mantine/core";
-import {Bug, Subtask, Trash} from "tabler-icons-react";
-import CreateTaskForm from "../createTask/CreateTaskForm";
-import DeleteProjectForm from "../../project/deleteProject/DeleteProjectForm";
-import {useState} from "react";
+import {Bug, Trash} from "tabler-icons-react";
 import BugForm from "../../bug/createBug/BugForm";
 import DeleteTaskForm from "../deleteTask/DeleteTaskForm";
 
@@ -38,7 +36,6 @@ const TaskDetails: React.FC<IProps> = ({task}) => {
 
         <Group my='md'>
             <Container>
-
                 <Text>Responsible Emails:</Text>
                 <List>
                     {responsibleEmails}

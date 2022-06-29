@@ -1,6 +1,6 @@
 import * as React from "react"
+import {useState} from "react"
 import {Button, TextInput} from "@mantine/core";
-import {useState} from "react";
 import {IProject} from "../../../redux/features/projects/projectTypes";
 import {deleteProjectThunk} from "../../../redux/features/projects/projectThunks";
 import {useAppDispatch} from "../../../redux/app/store";
