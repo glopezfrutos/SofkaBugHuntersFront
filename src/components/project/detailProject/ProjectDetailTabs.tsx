@@ -11,6 +11,7 @@ import {selectTaskList} from "../../../redux/features/tasks/taskSlice";
 import {getChildrenTasks} from "../../../redux/features/tasks/taskThunks";
 import ProjectDetails from "./ProjectDetails";
 import TaskList from "../../task/showTask/TaskList";
+import UpdateProjectForm from "../updateProject/UpdateProjectForm";
 
 interface IProps {}
 
@@ -31,7 +32,9 @@ const ProjectDetailTabs : React.FC<IProps> = () => {
             <Tabs.Tab label="Tasks" icon={<MessageCircle size={14} />}>
                 <TaskList taskList={taskList}/>
             </Tabs.Tab>
-            <Tabs.Tab label="Update" icon={<Settings size={14} />}>show project update form here</Tabs.Tab>
+            <Tabs.Tab label="Update" icon={<Settings size={14} />}>
+                <UpdateProjectForm project={projectChosen}/>
+            </Tabs.Tab>
             <Tabs.Tab label="History" icon={<Settings size={14} />}>show project history here</Tabs.Tab>
         </Tabs>
     </>

@@ -1,3 +1,11 @@
+import {fetchStatus} from "../projects/projectTypes";
+
+export interface IUserInitialState  {
+    usersList: IUser[]
+    fetchStatus : fetchStatus
+    error: null | string
+}
+
 export interface IUser {
     id?: string
     email: string
