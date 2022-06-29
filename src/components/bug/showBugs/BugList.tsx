@@ -8,14 +8,15 @@ interface IProps {
 }
 
 const BugList : React.FC<IProps> = ({bugsList}) => {
-    const content = bugsList?.map(bug => <BugCard key={bug.id} bug={bug}/>)
-
-    const grid = <Grid mt='xs'>
-        {content}
-    </Grid>
+    console.log(bugsList)
+    // const content = bugsList.map(bug => <BugCard key={bug.id} bug={bug}/>)
+    //
+    // const grid = <Grid mt='xs'>
+    //     {content}
+    // </Grid>
 
     return <>
-        {grid}
+        {/*{grid}*/}
     </>
 }
 
