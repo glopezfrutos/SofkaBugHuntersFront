@@ -9,9 +9,13 @@ const ENDPOINT = 'https://bughuntersback.herokuapp.com/api/v1/project/'
 //     error: null | string
 // }
 
+const email = "" + localStorage.getItem("email");
+
 export const getProjectsThunk = createAsyncThunk("get/projects",
     async () => {
         try {
+            const myHeaders = new Headers();
+            myHeaders.append('From', email)
             const response = await fetch(ENDPOINT)
             if (response.ok) {
                 return await response.json() as IProject[]
