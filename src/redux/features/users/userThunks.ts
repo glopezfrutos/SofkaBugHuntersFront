@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { HEADERS, HttpMethod } from "../../general/generalTypes";
+import { HttpMethod } from "../../general/generalTypes";
 import { url } from "../../general/url";
 import { IUser } from "./userTypes";
 
