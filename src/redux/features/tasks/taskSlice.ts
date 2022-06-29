@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ITask, ITaskInitialState} from "./taskTypes";
 import {fetchStatus} from "../projects/projectTypes";
 import {RootState} from "../../app/store";
-import {getChildrenTasks} from "./taskThunks";
+import {deleteTaskById, getChildrenTasks, getTaskById, postTaskThunk} from "./taskThunks";
 
 
 const initialState: ITaskInitialState = {
@@ -17,9 +17,27 @@ const taskSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+        //GET children task
         builder.addCase(getChildrenTasks.fulfilled, (state, action:PayloadAction<ITask[] | undefined>) => {
             if (action.payload) {
                 state.taskList = action.payload
+                state.fetchStatus = fetchStatus.FULFILLED
+            }
+        })
+    //    GET single task
+        builder.addCase(getTaskById.fulfilled, (state, action: PayloadAction<ITask>) => {
+            state.taskChosen = action.payload
+            state.fetchStatus = fetchStatus.FULFILLED
+        })
+    //    POST task
+        builder.addCase(postTaskThunk.fulfilled, (state, action) => {
+            state.taskList.push(action.payload)
+            state.fetchStatus = fetchStatus.FULFILLED
+        })
+    //    DELETE task by id
+        builder.addCase(deleteTaskById.fulfilled, (state, action:PayloadAction<string| undefined>) => {
+            if (action.payload) {
+                state.taskList = state.taskList.filter(task => task.id !== action.payload)
                 state.fetchStatus = fetchStatus.FULFILLED
             }
         })

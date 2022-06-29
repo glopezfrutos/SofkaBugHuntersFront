@@ -2,7 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import { HEADERS, HttpMethod } from "../../general/generalTypes";
 import { IUser } from "./userTypes";
 
-const ENDPOINT = 'http://localhost:8081/api/v1/user/'
+const ENDPOINT = 'https://bughuntersback.herokuapp.com/api/v1/user/'
 
 
 export const postUserThunk = createAsyncThunk("post/user",

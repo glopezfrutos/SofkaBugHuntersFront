@@ -1,3 +1,12 @@
+import {fetchStatus} from "../projects/projectTypes";
+
+export interface IBugInitialState {
+    bugsList: IBug[]
+    bugChosen: IBug
+    error: string | null
+    fetchStatus: fetchStatus
+}
+
 export interface IBug  {
     id ?: string,
     projectId: string,
@@ -15,7 +24,7 @@ export interface IBug  {
     conclusion: string,
     globalIssues: string,
     references: string,
-    closedA: string,
+    closedAt: string,
     solutionResponsible: string,
     developerObservations: string
 }
