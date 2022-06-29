@@ -13,6 +13,7 @@ const TableBugDetails: React.FC<IProps> = ({bug}) => {
             <th>Life cycle</th>
             <th>Severity</th>
             <th>Priority</th>
+            <th>Client importance</th>
         </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@ const TableBugDetails: React.FC<IProps> = ({bug}) => {
             <td>{bug.lifecycle}</td>
             <td>{bug.severity}</td>
             <td>{bug.priority}</td>
+            <td>{bug.clientImportance}</td>
         </tr>
         </tbody>
     </Table>
