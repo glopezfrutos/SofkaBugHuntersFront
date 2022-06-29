@@ -70,7 +70,11 @@ export const postTaskThunk = createAsyncThunk('post/task',
 export const putTaskThunk = createAsyncThunk('put/task',
     async (task: ITask) => {
         const response = await fetch(TASK_ENDPOINT, {
-            headers: HEADERS,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+            },
             method: HttpMethod.PUT,
             body: JSON.stringify(task)
         })
