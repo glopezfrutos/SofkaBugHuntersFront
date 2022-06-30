@@ -1,7 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IProject } from "./projectTypes";
-import { HttpMethod } from "../../general/generalTypes";
-import { url } from "../../general/url";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {IProject} from "./projectTypes";
+import {HttpMethod} from "../../general/generalTypes";
+import {url} from "../../general/url";
 
 const ENDPOINT = url + '/api/v1/project/'
 
@@ -10,13 +10,15 @@ const ENDPOINT = url + '/api/v1/project/'
 //     error: null | string
 // }
 
+const authBasic = 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
+
 
 export const getProjectsThunk = createAsyncThunk("get/projects",
     async () => {
         try {
             const response = await fetch(ENDPOINT, {
                 headers: {
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
+                    'Authorization': authBasic
                 }
             })
             if (response.ok) {
@@ -34,7 +36,8 @@ export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
         try {
             const response = await fetch(`${ENDPOINT}${projectId}`, {
                 headers: {
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
+                    'Authorization': authBasic
+
                 }
             })
             if (response.ok) {
@@ -55,7 +58,7 @@ export const postProjectsThunk = createAsyncThunk("post/project",
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
+                    'Authorization': authBasic
                 },
                 body: JSON.stringify(project)
             })
@@ -72,23 +75,18 @@ export const postProjectsThunk = createAsyncThunk("post/project",
 
 export const putProjectsThunk = createAsyncThunk("put/project",
     async (project: IProject) => {
-        try {
-            const response = await fetch(ENDPOINT, {
-                method: HttpMethod.PUT,
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
-                },
-                body: JSON.stringify(project)
-            })
-            if (response.ok) {
-                return await response.json() as IProject
-            }
-            throw new Error(response.statusText)
-        } catch (e) {
-            console.log(e)
-        }
+        const response = await fetch(ENDPOINT, {
+            //It should be POST since the backend does not have PUT
+            method: HttpMethod.POST,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': authBasic
+
+            },
+            body: JSON.stringify(project)
+        })
+        return await response.json() as IProject
     }
 )
 
@@ -100,7 +98,7 @@ export const deleteProjectThunk = createAsyncThunk("delete/project",
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
+                    'Authorization': authBasic
                 },
             })
             if (response.ok) {
