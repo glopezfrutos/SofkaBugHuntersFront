@@ -59,7 +59,6 @@ export const postProjectsThunk = createAsyncThunk("post/project",
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                     'Authorization': authBasic
-
                 },
                 body: JSON.stringify(project)
             })
