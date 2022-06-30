@@ -1,14 +1,17 @@
 import * as React from "react"
-import {Button, Group, Paper, PasswordInput, TextInput} from "@mantine/core";
-import {useForm} from "@mantine/form";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../../firebaseConfig";
-import {showNotification} from "@mantine/notifications";
+import { Button, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
 }
 
 const SignupForm: React.FC<IProps> = () => {
+    const navigate = useNavigate();
+
     const form = useForm({
         initialValues: {
             email: '',
@@ -18,13 +21,19 @@ const SignupForm: React.FC<IProps> = () => {
     })
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const {email, password, confirmPassword} = form.values
+        const { email, password, confirmPassword } = form.values
         if (email && (password === confirmPassword)) {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     console.log(userCredential)
-                //    dispatch
-                //    navigate
+                    console.log("User signed in: " + email)
+                    showNotification({
+                        color: 'green',
+                        title: 'Successful',
+                        message: 'Please, log in!',
+                    })
+                    //    dispatch
+                    //    navigate
                 })
                 .catch((error) => {
                     console.log(error.message);
