@@ -3,21 +3,50 @@ import {Button, Container, Select, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
 import {ITask} from "../../../redux/features/tasks/taskTypes";
+import {useAppDispatch} from "../../../redux/app/store";
+import {useEffect, useMemo} from "react";
+import {getUsersThunk} from "../../../redux/features/users/userThunks";
+import {useSelector} from "react-redux";
+import {selectUserList} from "../../../redux/features/users/userSlice";
+import dayjs from "dayjs";
+import {formatDate} from "../../../utils/dateUtils";
+import {IBug} from "../../../redux/features/bugs/bugTypes";
+import {postBugThunk} from "../../../redux/features/bugs/bugThunks";
+import {showNotification} from "@mantine/notifications";
 
 interface IProps {
     task: ITask
 }
 
 const BugForm: React.FC<IProps> = ({task}) => {
-    //select the users
-    // map to form a selectData
+    const DUMMY_EMAIL = "dummyEmail@gmail.com"
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(getUsersThunk())
+    }, [dispatch])
+    const usersList = useSelector(selectUserList())
+    const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
+
+    const lifeCycleSelectData = [
+        {value: 'PLANNING', label: 'Planning'},
+        {value: 'ANALYSIS', label: 'Analysis'},
+        {value: 'DESIGN', label: 'Design'},
+        {value: 'EXECUTION', label: 'Execution'},
+        {value: 'TEST', label: 'Test'},
+        {value: 'DEPLOY', label: 'Deploy'},
+        {value: 'MAINTENANCE', label: 'Maintenance'},
+    ]
+    const levelSelectData = [
+        {value: 'HIGH', label: 'High'},
+        {value: 'MID', label: 'Medium'},
+        {value: 'LOW', label: 'Low'},
+    ]
 
     const form = useForm({
         initialValues: {
             title: '',
             description: '',
             author: '',
-            taskId: '',
             responsableEmail: '',
             discoverAt: '',
             contextInfo: '',
@@ -25,7 +54,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
             severity: '',
             priority: '',
             clientImportance: '',
-            status: '',
             endDate: new Date(),
             conclusion: '',
             globalProblems: '',
@@ -36,7 +64,59 @@ const BugForm: React.FC<IProps> = ({task}) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(form.values)
+        const {
+            title,
+            description,
+            responsableEmail,
+            contextInfo,
+            discoverAt,
+            severity,
+            priority,
+            clientImportance,
+            endDate,
+            developerObservations,
+            globalProblems,
+            conclusion,
+            links,
+            references
+
+        } = form.values
+        const areValid = [title, description,responsableEmail,contextInfo, severity, priority, clientImportance, discoverAt].every(Boolean)
+        const isBefore = dayjs().isBefore(dayjs(endDate))
+        if (areValid) {
+            const checkDate = isBefore ? formatDate(endDate) : ''
+            const newBug: IBug = {
+                projectId: task.projectId,
+                taskId: task.id!,
+                closedAt: checkDate,
+                createdAt: formatDate(new Date()),
+                clientImportance: clientImportance,
+                title,
+                developerObservations,
+                priority,
+                severity,
+                lifecycle: discoverAt,
+                description,
+                additionalFile: links,
+                contextInfo,
+                globalIssues: globalProblems,
+                references,
+                conclusion,
+                responsible: DUMMY_EMAIL,
+                solutionResponsible: responsableEmail,
+            }
+            console.log(newBug)
+            dispatch(postBugThunk(newBug))
+            showNotification({
+                title: 'Bug added successfully',
+                message: 'The bug was saved!',
+            })
+        }
+        showNotification({
+            title: 'There is an error on the form!',
+            color: 'red',
+            message: 'Check if the data is correct...',
+        })
     }
     return <>
         <Container size="xs" px="xs" my='xs'>
@@ -65,12 +145,7 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     searchable
                     label="Pick a responsable"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'react', label: 'React'},
-                        {value: 'ng', label: 'Angular'},
-                        {value: 'svelte', label: 'Svelte'},
-                        {value: 'vue', label: 'Vue'},
-                    ]}
+                    data={responsableSelectData}
                     {...form.getInputProps('responsableEmail')}
                 />
                 <Textarea
@@ -88,14 +163,7 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     required
                     label="Pick a lifecycle"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'Planning', label: 'Planning'},
-                        {value: 'Analysis', label: 'Analysis'},
-                        {value: 'Implementation', label: 'Implementation'},
-                        {value: 'Testing', label: 'Testing'},
-                        {value: 'Deployment', label: 'Deployment'},
-                        {value: 'Maintenance', label: 'Maintenance'},
-                    ]}
+                    data={lifeCycleSelectData}
                     {...form.getInputProps('discoverAt')}
                 />
                 <Textarea
@@ -111,33 +179,21 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     required
                     label="Severity level"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'High', label: 'High'},
-                        {value: 'Medium', label: 'Medium'},
-                        {value: 'Low', label: 'Low'},
-                    ]}
+                    data={levelSelectData}
                     {...form.getInputProps('severity')}
                 />
                 <Select
                     required
                     label="Priority level"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'High', label: 'High'},
-                        {value: 'Medium', label: 'Medium'},
-                        {value: 'Low', label: 'Low'},
-                    ]}
+                    data={levelSelectData}
                     {...form.getInputProps('priority')}
                 />
                 <Select
                     required
                     label="Client importance level"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'High', label: 'High'},
-                        {value: 'Medium', label: 'Medium'},
-                        {value: 'Low', label: 'Low'},
-                    ]}
+                    data={levelSelectData}
                     {...form.getInputProps('clientImportance')}
                 />
                 {/*Huge text areas*/}

@@ -17,7 +17,7 @@ interface IProps {
     project: IProject
 }
 
-const UpdateProjectForm : React.FC<IProps> = ({project}) => {
+const UpdateProjectForm: React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getUsersThunk())
@@ -36,19 +36,19 @@ const UpdateProjectForm : React.FC<IProps> = ({project}) => {
     //load this state with the information from the backend
     const [, setMembersData] = React.useState([] as string[]);
     const [, setOwnersData] = React.useState([] as string[]);
-    const membersSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
-    const ownersSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
+    const membersSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
+    const ownersSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const {name, description, owners, teamEmails, closedAt, status} = form.values
-        const valid = [name, description,status].every(Boolean)
+        const valid = [name, description, status].every(Boolean)
         const membersLength = teamEmails.length && owners.length
         const isBefore = dayjs().isBefore(dayjs(closedAt))
 
         if (valid && membersLength) {
             const checkDate = isBefore ? formatDate(closedAt) : ''
-            const newProject: IProject = {
+            const projectToUpdate: IProject = {
                 id: project.id,
                 name,
                 description,
@@ -58,12 +58,11 @@ const UpdateProjectForm : React.FC<IProps> = ({project}) => {
                 closedAt: checkDate,
                 status
             }
-            dispatch(putProjectsThunk(newProject))
+            dispatch(putProjectsThunk(projectToUpdate))
             showNotification({
                 title: 'Project updated successfully',
                 message: 'The project was updated!',
             })
-            form.reset()
             return
         }
         showNotification({
@@ -129,7 +128,7 @@ const UpdateProjectForm : React.FC<IProps> = ({project}) => {
                     data={[
                         {value: 'CREATED', label: 'Created'},
                         {value: 'ACTIVE', label: 'Active'},
-                        {value: 'CANCELLED', label: 'Cancelled'},
+                        {value: 'CANCELED', label: 'Cancelled'},
                         {value: 'PAUSED', label: 'Paused'},
                         {value: 'FINISHED', label: 'Finished'},
                     ]}

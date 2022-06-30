@@ -23,8 +23,8 @@ const DeleteTaskForm : React.FC<IProps> = ({task}) => {
             dispatch(deleteTaskById(id))
             navigate("/dashboard")
             showNotification({
-                title: 'Project removed successfully',
-                message: `The project ${task.name} was deleted!`,
+                title: 'Task removed successfully',
+                message: `The task ${task.name} was deleted!`,
             })
         }
 
@@ -34,7 +34,7 @@ const DeleteTaskForm : React.FC<IProps> = ({task}) => {
             <TextInput
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
-                placeholder='Type project name to confirm'
+                placeholder="Type task's name to confirm"
             />
             {
                 taskName === task.name &&
