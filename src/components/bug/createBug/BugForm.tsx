@@ -21,9 +21,6 @@ interface IProps {
 const BugForm: React.FC<IProps> = ({task}) => {
     const DUMMY_EMAIL = "dummyEmail@gmail.com"
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
     const usersList = useSelector(selectUserList())
     const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
 

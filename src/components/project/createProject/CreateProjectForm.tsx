@@ -18,9 +18,6 @@ interface IProps {
 
 const CreateProjectForm: React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
     const usersList = useSelector(selectUserList())
     const form = useForm({
         initialValues: {
@@ -34,8 +31,8 @@ const CreateProjectForm: React.FC<IProps> = () => {
     //load this state with the information from the backend
     const [, setMembersData] = React.useState([] as string[]);
     const [, setOwnersData] = React.useState([] as string[]);
-    const membersSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
-    const ownersSelectData = useMemo(() =>  usersList.map(user => user.email), [usersList])
+    const membersSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
+    const ownersSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

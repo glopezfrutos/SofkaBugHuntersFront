@@ -20,9 +20,6 @@ interface IProps {
 
 const CreateTaskForm: React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
     const usersList = useSelector(selectUserList())
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);

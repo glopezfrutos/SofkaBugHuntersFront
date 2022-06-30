@@ -19,9 +19,6 @@ interface IProps {
 
 const UpdateProjectForm: React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
     const usersList = useSelector(selectUserList())
     const form = useForm({
         initialValues: {
