@@ -34,7 +34,7 @@ const DeleteTaskForm : React.FC<IProps> = ({task}) => {
             <TextInput
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
-                placeholder='Type project name to confirm'
+                placeholder="Type task's name to confirm"
             />
             {
                 taskName === task.name &&

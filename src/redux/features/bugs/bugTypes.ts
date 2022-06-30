@@ -21,7 +21,7 @@ export interface IBug  {
     severity: string,  // Enum: (Bajo; Medio; Alto)
     priority: string,  // Enum: (Bajo; Medio; Alto)
     clientImportance: string
-    status: string,  // Enum: (asignado, cancelado, rechazado, cerrado con defectos, reinsidente, solucionado
+    status ?: string,  // Enum: (asignado, cancelado, rechazado, cerrado con defectos, reinsidente, solucionado
     conclusion: string,
     globalIssues: string,
     references: string,

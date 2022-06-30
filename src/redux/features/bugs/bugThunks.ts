@@ -1,6 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { url } from "../../general/url";
-import { IBug } from "./bugTypes";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {url} from "../../general/url";
+import {IBug} from "./bugTypes";
+import {HttpMethod} from "../../general/generalTypes";
 
 
 const GET_CHILDREN_BUGS = url + '/api/v1/task/'
@@ -22,6 +23,21 @@ export const getBugById = createAsyncThunk('get/singleBug',
         const response = await fetch(`${BUG_ENDPOINT}${bugId}`, {
             headers: {
                 'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+            }
+        })
+        return await response.json() as IBug
+    }
+)
+
+export const postBugThunk = createAsyncThunk("post/bug",
+    async (bug: IBug) => {
+        const response = await fetch(BUG_ENDPOINT, {
+            method: HttpMethod.POST,
+            body: JSON.stringify(bug),
+            headers: {
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email")),
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             }
         })
         return await response.json() as IBug
