@@ -1,11 +1,10 @@
 import * as React from "react"
+import {useMemo} from "react"
 import {Button, Container, Select, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useForm} from "@mantine/form";
 import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
-import {useEffect, useMemo} from "react";
-import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
 import dayjs from "dayjs";
@@ -13,6 +12,7 @@ import {formatDate} from "../../../utils/dateUtils";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
 import {postBugThunk} from "../../../redux/features/bugs/bugThunks";
 import {showNotification} from "@mantine/notifications";
+import {levelSelectData, lifeCycleSelectData} from "../sharedBugData";
 
 interface IProps {
     task: ITask
@@ -23,21 +23,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
     const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
-
-    const lifeCycleSelectData = [
-        {value: 'PLANNING', label: 'Planning'},
-        {value: 'ANALYSIS', label: 'Analysis'},
-        {value: 'DESIGN', label: 'Design'},
-        {value: 'EXECUTION', label: 'Execution'},
-        {value: 'TEST', label: 'Test'},
-        {value: 'DEPLOY', label: 'Deploy'},
-        {value: 'MAINTENANCE', label: 'Maintenance'},
-    ]
-    const levelSelectData = [
-        {value: 'HIGH', label: 'High'},
-        {value: 'MID', label: 'Medium'},
-        {value: 'LOW', label: 'Low'},
-    ]
 
     const form = useForm({
         initialValues: {

@@ -1,10 +1,10 @@
 import * as React from "react"
+import {useEffect} from "react"
 import {AppShell, useMantineTheme} from "@mantine/core";
 import {Outlet} from "react-router-dom";
 import ShellHeader from "../../components/mantine/shell/ShellHeader";
 import ShellNavbar from "../../components/mantine/shell/ShellNavbar";
 import {useAppDispatch} from "../../redux/app/store";
-import {useEffect} from "react";
 import {getUsersThunk} from "../../redux/features/users/userThunks";
 
 interface IProps {

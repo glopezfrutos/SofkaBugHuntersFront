@@ -1,7 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ITask } from "./taskTypes";
-import { HttpMethod } from "../../general/generalTypes";
-import { url } from "../../general/url";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {ITask} from "./taskTypes";
+import {HttpMethod} from "../../general/generalTypes";
+import {url} from "../../general/url";
 
 const GET_CHILDREN_TASKS = url + '/api/v1/project/'
 const TASK_ENDPOINT = url + '/api/v1/task/'

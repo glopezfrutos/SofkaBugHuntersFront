@@ -1,10 +1,9 @@
 import * as React from "react"
-import {useEffect, useMemo} from "react"
+import {useMemo} from "react"
 import {IProject} from "../../../redux/features/projects/projectTypes";
 import {Button, Container, MultiSelect, Select, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useAppDispatch} from "../../../redux/app/store";
-import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
 import {useForm} from "@mantine/form";
