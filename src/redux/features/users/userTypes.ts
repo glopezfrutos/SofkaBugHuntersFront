@@ -9,7 +9,7 @@ export interface IUserInitialState  {
 
 export interface IUser {
     id?: string
-    enable: boolean
+    enable?: boolean
     email: string
     role?: string // Enum: ADMIN, TESTER, DEVELOPER, READER (default);
     sessionId?: string
