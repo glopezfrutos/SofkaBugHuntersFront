@@ -1,16 +1,16 @@
 import * as React from "react"
+import {useMemo} from "react"
 import {useAppDispatch} from "../../../redux/app/store";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
-import {useMemo} from "react";
 import {useForm} from "@mantine/form";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
-import {postBugThunk} from "../../../redux/features/bugs/bugThunks";
+import {putBugThunk} from "../../../redux/features/bugs/bugThunks";
 import {showNotification} from "@mantine/notifications";
 import {Button, Container, Select, Textarea, TextInput} from "@mantine/core";
-import {levelSelectData, lifeCycleSelectData} from "../sharedBugData";
+import {bugSelectData, levelSelectData, lifeCycleSelectData} from "../sharedBugData";
 import {DatePicker} from "@mantine/dates";
 
 interface IProps {
@@ -25,21 +25,21 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
 
     const form = useForm({
         initialValues: {
-            title: '',
-            description: '',
-            author: '',
-            responsableEmail: '',
-            discoverAt: '',
-            contextInfo: '',
-            links: '',
-            severity: '',
-            priority: '',
-            clientImportance: '',
+            title: bug.title,
+            description: bug.description,
+            responsableEmail: DUMMY_EMAIL,
+            discoverAt: bug.lifecycle,
+            contextInfo: bug.contextInfo,
+            links: bug.additionalFile,
+            severity: bug.severity,
+            priority: bug.priority,
+            clientImportance: bug.clientImportance,
             endDate: new Date(),
-            conclusion: '',
-            globalProblems: '',
-            references: '',
-            developerObservations: '',
+            conclusion: bug.conclusion,
+            globalProblems: bug.globalIssues,
+            references: bug.references,
+            developerObservations: bug.developerObservations,
+            status: bug.status
         },
     })
 
@@ -59,10 +59,11 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
             globalProblems,
             conclusion,
             links,
-            references
+            references,
+            status
 
         } = form.values
-        const areValid = [title, description,responsableEmail,contextInfo, severity, priority, clientImportance, discoverAt].every(Boolean)
+        const areValid = [title, description,responsableEmail,contextInfo, severity, priority, clientImportance, discoverAt, status].every(Boolean)
         const isBefore = dayjs().isBefore(dayjs(endDate))
         if (areValid) {
             const checkDate = isBefore ? formatDate(endDate) : ''
@@ -86,13 +87,15 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
                 conclusion,
                 responsible: DUMMY_EMAIL,
                 solutionResponsible: responsableEmail,
+                status,
             }
             console.log(bugToUpdate)
-            dispatch(postBugThunk(bugToUpdate))
+            dispatch(putBugThunk(bugToUpdate))
             showNotification({
-                title: 'Bug added successfully',
+                title: 'Bug updated successfully',
                 message: 'The bug was saved!',
             })
+            return
         }
         showNotification({
             title: 'There is an error on the form!',
@@ -125,7 +128,7 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
                 <Select
                     required
                     searchable
-                    label="Pick a responsable"
+                    label="Pick a responsible"
                     placeholder="Pick one"
                     data={responsableSelectData}
                     {...form.getInputProps('responsableEmail')}
@@ -218,6 +221,13 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
                     maxRows={4}
                     maxLength={5000}
                     {...form.getInputProps('developerObservations')}
+                />
+                <Select
+                    required
+                    label="Pick a lifecycle"
+                    placeholder="Pick one"
+                    data={bugSelectData}
+                    {...form.getInputProps('status')}
                 />
                 <Button
                     color='blue'

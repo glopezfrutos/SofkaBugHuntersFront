@@ -47,6 +47,23 @@ export const postBugThunk = createAsyncThunk("post/bug",
     }
 )
 
+
+export const putBugThunk = createAsyncThunk("put/bug",
+    async (bug: IBug) => {
+        const response = await fetch(BUG_ENDPOINT, {
+            //it is post because the backend is built like that
+            method: HttpMethod.POST,
+            body: JSON.stringify(bug),
+            headers: {
+                'Authorization': authBasic,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+        return await response.json() as IBug
+    }
+)
+
 export const deleteBugById = createAsyncThunk("delete/bug",
     async (bugId: string) => {
         await fetch(`${BUG_ENDPOINT}${bugId}`, {

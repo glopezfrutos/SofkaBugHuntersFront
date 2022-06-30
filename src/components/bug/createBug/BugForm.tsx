@@ -28,7 +28,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
         initialValues: {
             title: '',
             description: '',
-            author: '',
             responsableEmail: '',
             discoverAt: '',
             contextInfo: '',

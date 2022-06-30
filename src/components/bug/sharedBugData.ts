@@ -12,3 +12,12 @@ export const levelSelectData = [
     {value: 'MID', label: 'Medium'},
     {value: 'LOW', label: 'Low'},
 ]
+
+export const bugSelectData = [
+    {value: 'ASSIGNED', label: 'Assigned'},
+    {value: 'CANCELED', label: 'Cancelled'},
+    {value: 'REJECTED', label: 'Rejected'},
+    {value: 'CLOSE_WITH_DEFECTS', label: 'Close with defects'},
+    {value: 'RECIDIVIST', label: 'Recidivist'},
+    {value: 'SOLVED', label: 'Solved'},
+]
