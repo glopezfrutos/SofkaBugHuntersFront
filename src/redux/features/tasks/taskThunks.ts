@@ -11,7 +11,7 @@ export const getChildrenTasks = createAsyncThunk("get/childrenTask",
         try {
             const response = await fetch(`${GET_CHILDREN_TASKS}${projectId}/task`, {
                 headers: {
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
                 }
             })
             if (response.ok) {
@@ -28,7 +28,7 @@ export const getTaskById = createAsyncThunk('get/taskById',
     async (taskId: string) => {
         const response = await fetch(`${TASK_ENDPOINT}${taskId}`, {
             headers: {
-                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             }
         })
         return await response.json() as ITask
@@ -42,7 +42,7 @@ export const deleteTaskById = createAsyncThunk('delete/task',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             },
         })
         if (response.ok) {
@@ -57,7 +57,7 @@ export const postTaskThunk = createAsyncThunk('post/task',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             },
             method: HttpMethod.POST,
             body: JSON.stringify(task)
@@ -73,7 +73,7 @@ export const putTaskThunk = createAsyncThunk('put/task',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             },
             method: HttpMethod.PUT,
             body: JSON.stringify(task)

@@ -17,7 +17,9 @@ export const postUserThunk = createAsyncThunk("post/user",
                 body: JSON.stringify({ email: userEmail })
             })
             if (response.ok) {
-                return await response.json() as IUser
+                const data = await response.json() as IUser
+                localStorage.setItem("sessionId", data.sessionId ? data.sessionId : "");
+                return data
             }
             throw new Error(response.statusText)
         } catch (e) {
@@ -30,7 +32,7 @@ export const getUsersThunk = createAsyncThunk("get/users",
     async () => {
         const response = await fetch(ENDPOINT, {
             headers: {
-                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             }
         })
         return await response.json() as IUser[]
