@@ -26,6 +26,21 @@ const BugForm: React.FC<IProps> = ({task}) => {
     const usersList = useSelector(selectUserList())
     const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
 
+    const lifeCycleSelectData = [
+        {value: 'PLANNING', label: 'Planning'},
+        {value: 'ANALYSIS', label: 'Analysis'},
+        {value: 'DESIGN', label: 'Design'},
+        {value: 'EXECUTION', label: 'Execution'},
+        {value: 'TEST', label: 'Test'},
+        {value: 'DEPLOY', label: 'Deploy'},
+        {value: 'MAINTENANCE', label: 'Maintenance'},
+    ]
+    const levelSelectData = [
+        {value: 'HIGH', label: 'High'},
+        {value: 'MID', label: 'Medium'},
+        {value: 'LOW', label: 'Low'},
+    ]
+
     const form = useForm({
         initialValues: {
             title: '',
@@ -139,14 +154,7 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     required
                     label="Pick a lifecycle"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'Planning', label: 'Planning'},
-                        {value: 'Analysis', label: 'Analysis'},
-                        {value: 'Implementation', label: 'Implementation'},
-                        {value: 'Testing', label: 'Testing'},
-                        {value: 'Deployment', label: 'Deployment'},
-                        {value: 'Maintenance', label: 'Maintenance'},
-                    ]}
+                    data={lifeCycleSelectData}
                     {...form.getInputProps('discoverAt')}
                 />
                 <Textarea
@@ -162,33 +170,21 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     required
                     label="Severity level"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'High', label: 'High'},
-                        {value: 'Medium', label: 'Medium'},
-                        {value: 'Low', label: 'Low'},
-                    ]}
+                    data={levelSelectData}
                     {...form.getInputProps('severity')}
                 />
                 <Select
                     required
                     label="Priority level"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'High', label: 'High'},
-                        {value: 'Medium', label: 'Medium'},
-                        {value: 'Low', label: 'Low'},
-                    ]}
+                    data={levelSelectData}
                     {...form.getInputProps('priority')}
                 />
                 <Select
                     required
                     label="Client importance level"
                     placeholder="Pick one"
-                    data={[
-                        {value: 'High', label: 'High'},
-                        {value: 'Medium', label: 'Medium'},
-                        {value: 'Low', label: 'Low'},
-                    ]}
+                    data={levelSelectData}
                     {...form.getInputProps('clientImportance')}
                 />
                 {/*Huge text areas*/}
