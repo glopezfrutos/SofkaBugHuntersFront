@@ -58,13 +58,11 @@ const UpdateProjectForm: React.FC<IProps> = ({project}) => {
                 closedAt: checkDate,
                 status
             }
-            console.log(projectToUpdate)
             dispatch(putProjectsThunk(projectToUpdate))
             showNotification({
                 title: 'Project updated successfully',
                 message: 'The project was updated!',
             })
-            form.reset()
             return
         }
         showNotification({

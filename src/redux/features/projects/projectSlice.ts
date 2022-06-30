@@ -61,6 +61,7 @@ const projectSlice = createSlice({
             if (action.payload) {
                 state.projectList = state.projectList.map(p => p.id === action.payload?.id ? action.payload : p)
                 // updated project chosen
+                state.projectChosen = action.payload
                 state.fetchStatus = fetchStatus.FULFILLED
             }
         })

@@ -68,7 +68,6 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
                 title: 'Task updated successfully',
                 message: 'The task was updated!',
             })
-            form.reset()
             return
         }
         showNotification({
