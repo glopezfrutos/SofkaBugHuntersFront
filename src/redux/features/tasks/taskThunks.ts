@@ -82,7 +82,8 @@ export const putTaskThunk = createAsyncThunk('put/task',
                 'Content-Type': 'application/json',
                 'Authorization': authBasic
             },
-            method: HttpMethod.PUT,
+            //The backed takes the post as a put.
+            method: HttpMethod.POST,
             body: JSON.stringify(task)
         })
         return await response.json() as ITask

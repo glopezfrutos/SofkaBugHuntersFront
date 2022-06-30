@@ -58,6 +58,8 @@ const UpdateProjectForm: React.FC<IProps> = ({project}) => {
                 closedAt: checkDate,
                 status
             }
+            //ideally I should set the error on the slice
+            //and then check that to show an appropriate message
             dispatch(putProjectsThunk(projectToUpdate))
             showNotification({
                 title: 'Project updated successfully',

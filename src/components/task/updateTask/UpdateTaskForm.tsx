@@ -52,16 +52,17 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
         if (areValid && responsibleLength) {
             const checkDate = isBefore ? formatDate(closedAt) : task.closedAt
             const taskToUpdate: ITask = {
+                id: task.id,
                 name,
                 description,
                 tag,
                 closedAt: checkDate,
-                createdAt: formatDate(new Date()),
+                createdAt: task.createdAt,
                 projectId: task.projectId,
                 projectName: task.projectName,
                 additionalFilesId,
                 responsibleEmail,
-                status
+                status,
             }
             dispatch(putTaskThunk(taskToUpdate))
             showNotification({
