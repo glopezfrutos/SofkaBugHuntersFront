@@ -27,7 +27,7 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
         initialValues: {
             title: bug.title,
             description: bug.description,
-            responsableEmail: DUMMY_EMAIL,
+            responsableEmail: bug.solutionResponsible,
             discoverAt: bug.lifecycle,
             contextInfo: bug.contextInfo,
             links: bug.additionalFile,
@@ -85,7 +85,7 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
                 globalIssues: globalProblems,
                 references,
                 conclusion,
-                responsible: DUMMY_EMAIL,
+                responsible: bug.responsible,
                 solutionResponsible: responsableEmail,
                 status,
             }
