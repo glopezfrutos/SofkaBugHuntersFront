@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
 import {postBugThunk} from "../../../redux/features/bugs/bugThunks";
+import {showNotification} from "@mantine/notifications";
 
 interface IProps {
     task: ITask
@@ -106,8 +107,16 @@ const BugForm: React.FC<IProps> = ({task}) => {
             }
             console.log(newBug)
             dispatch(postBugThunk(newBug))
-
+            showNotification({
+                title: 'Bug added successfully',
+                message: 'The bug was saved!',
+            })
         }
+        showNotification({
+            title: 'There is an error on the form!',
+            color: 'red',
+            message: 'Check if the data is correct...',
+        })
     }
     return <>
         <Container size="xs" px="xs" my='xs'>
