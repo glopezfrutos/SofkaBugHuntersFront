@@ -23,8 +23,8 @@ const DeleteTaskForm : React.FC<IProps> = ({task}) => {
             dispatch(deleteTaskById(id))
             navigate("/dashboard")
             showNotification({
-                title: 'Project removed successfully',
-                message: `The project ${task.name} was deleted!`,
+                title: 'Task removed successfully',
+                message: `The task ${task.name} was deleted!`,
             })
         }
 

@@ -43,3 +43,17 @@ export const postBugThunk = createAsyncThunk("post/bug",
         return await response.json() as IBug
     }
 )
+
+export const deleteBugById = createAsyncThunk("delete/bug",
+    async (bugId: string) => {
+        await fetch(`${BUG_ENDPOINT}${bugId}`, {
+            method: HttpMethod.DELETE,
+            headers: {
+                'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email")),
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+        return bugId
+    }
+)

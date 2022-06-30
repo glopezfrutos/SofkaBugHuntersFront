@@ -1,9 +1,13 @@
 import * as React from "react"
-import {Button, Container, Group, Text} from "@mantine/core";
+import {ActionIcon, Button, Container, Group, Modal, Text} from "@mantine/core";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
 import BugTitle from "./BugTitle";
 import TableBugDetails from "./TableBugDetails";
 import GroupBugResponsible from "./GroupBugResponsible";
+import {Trash} from "tabler-icons-react";
+import DeleteTaskForm from "../../task/deleteTask/DeleteTaskForm";
+import {useState} from "react";
+import DeleteBugForm from "../deleteBug/DeleteBugForm";
 
 interface IProps {
     bug: IBug
@@ -19,14 +23,30 @@ interface IProps {
 * "client importance":"SOLVED",    group
 * */
 const BugSpecificDetails: React.FC<IProps> = ({bug}) => {
+    const [openDelete, setOpenDelete] = useState(false);
+
     return <Container>
         <BugTitle bug={bug}/>
+
 
         <GroupBugResponsible bug={bug}/>
 
         <TableBugDetails bug={bug}/>
 
-        <Button color='red'>Delete</Button>
+        <Group position='right'>
+            <ActionIcon color='red' onClick={() => setOpenDelete(true)}>
+                <Trash/>
+            </ActionIcon>
+        </Group>
+        <Modal
+            size='md'
+            opened={openDelete}
+            onClose={() => setOpenDelete(false)}
+            title={`Are you sure you want to delete ${bug.title}?`}
+        >
+            <DeleteBugForm bug={bug}/>
+        </Modal>
+
     </Container>
 }
 

@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IBug, IBugInitialState} from "./bugTypes";
 import {fetchStatus} from "../projects/projectTypes";
-import {getBugById, getChildrenBugs, postBugThunk} from "./bugThunks";
+import {deleteBugById, getBugById, getChildrenBugs, postBugThunk} from "./bugThunks";
 import {RootState} from "../../app/store";
 
 
@@ -30,6 +30,11 @@ const bugSlice = createSlice({
     //    Post bug
         builder.addCase(postBugThunk.fulfilled, (state, action: PayloadAction<IBug>) => {
             state.bugsList.push(action.payload)
+            state.fetchStatus = fetchStatus.FULFILLED
+        })
+    //    delete bug by id
+        builder.addCase(deleteBugById.fulfilled, (state, action: PayloadAction<string>) => {
+            state.bugsList = state.bugsList.filter(bug => bug.id !== action.payload)
             state.fetchStatus = fetchStatus.FULFILLED
         })
     }
