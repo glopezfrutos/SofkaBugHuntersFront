@@ -1,8 +1,7 @@
 import * as React from "react"
-import {useEffect, useMemo, useState} from "react"
+import {useMemo, useState} from "react"
 import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
-import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
 import {useForm} from "@mantine/form";
@@ -19,9 +18,6 @@ interface IProps {
 
 const UpdateTaskForm : React.FC<IProps> = ({task}) => {
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
     const usersList = useSelector(selectUserList())
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
@@ -52,16 +48,17 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
         if (areValid && responsibleLength) {
             const checkDate = isBefore ? formatDate(closedAt) : task.closedAt
             const taskToUpdate: ITask = {
+                id: task.id,
                 name,
                 description,
                 tag,
                 closedAt: checkDate,
-                createdAt: formatDate(new Date()),
+                createdAt: task.createdAt,
                 projectId: task.projectId,
                 projectName: task.projectName,
                 additionalFilesId,
                 responsibleEmail,
-                status
+                status,
             }
             dispatch(putTaskThunk(taskToUpdate))
             showNotification({
@@ -143,7 +140,7 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
                         {value: 'CREATED', label: 'Created'},
                         {value: 'OPENED', label: 'Opened'},
                         {value: 'CLOSED', label: 'Closed'},
-                        {value: 'IMPEDED', label: 'Impeded'},
+                        {value: 'BLOCKED', label: 'Blocked'},
                     ]}
                     {...form.getInputProps('status')}
                 />

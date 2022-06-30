@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ITask, ITaskInitialState} from "./taskTypes";
 import {fetchStatus} from "../projects/projectTypes";
 import {RootState} from "../../app/store";
-import {deleteTaskById, getChildrenTasks, getTaskById, postTaskThunk} from "./taskThunks";
+import {deleteTaskById, getChildrenTasks, getTaskById, postTaskThunk, putTaskThunk} from "./taskThunks";
 
 
 const initialState: ITaskInitialState = {
@@ -18,28 +18,34 @@ const taskSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         //GET children task
-        builder.addCase(getChildrenTasks.fulfilled, (state, action:PayloadAction<ITask[] | undefined>) => {
+        builder.addCase(getChildrenTasks.fulfilled, (state, action: PayloadAction<ITask[] | undefined>) => {
             if (action.payload) {
                 state.taskList = action.payload
                 state.fetchStatus = fetchStatus.FULFILLED
             }
         })
-    //    GET single task
+        //    GET single task
         builder.addCase(getTaskById.fulfilled, (state, action: PayloadAction<ITask>) => {
             state.taskChosen = action.payload
             state.fetchStatus = fetchStatus.FULFILLED
         })
-    //    POST task
+        //    POST task
         builder.addCase(postTaskThunk.fulfilled, (state, action) => {
             state.taskList.push(action.payload)
             state.fetchStatus = fetchStatus.FULFILLED
         })
-    //    DELETE task by id
-        builder.addCase(deleteTaskById.fulfilled, (state, action:PayloadAction<string| undefined>) => {
+        //    DELETE task by id
+        builder.addCase(deleteTaskById.fulfilled, (state, action: PayloadAction<string | undefined>) => {
             if (action.payload) {
                 state.taskList = state.taskList.filter(task => task.id !== action.payload)
                 state.fetchStatus = fetchStatus.FULFILLED
             }
+        })
+        //    putTaskThunk
+        builder.addCase(putTaskThunk.fulfilled, (state, action: PayloadAction<ITask>) => {
+            state.taskList = state.taskList.map(task => task.id === action.payload.id ? action.payload : task)
+            state.taskChosen = action.payload
+            state.fetchStatus = fetchStatus.FULFILLED
         })
     }
 })

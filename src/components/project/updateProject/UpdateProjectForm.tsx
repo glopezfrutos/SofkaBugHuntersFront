@@ -1,10 +1,9 @@
 import * as React from "react"
-import {useEffect, useMemo} from "react"
+import {useMemo} from "react"
 import {IProject} from "../../../redux/features/projects/projectTypes";
 import {Button, Container, MultiSelect, Select, Textarea, TextInput} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
 import {useAppDispatch} from "../../../redux/app/store";
-import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
 import {useForm} from "@mantine/form";
@@ -19,9 +18,6 @@ interface IProps {
 
 const UpdateProjectForm: React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
     const usersList = useSelector(selectUserList())
     const form = useForm({
         initialValues: {
@@ -58,6 +54,8 @@ const UpdateProjectForm: React.FC<IProps> = ({project}) => {
                 closedAt: checkDate,
                 status
             }
+            //ideally I should set the error on the slice
+            //and then check that to show an appropriate message
             dispatch(putProjectsThunk(projectToUpdate))
             showNotification({
                 title: 'Project updated successfully',
