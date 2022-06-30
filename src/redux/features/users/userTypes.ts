@@ -12,4 +12,5 @@ export interface IUser {
     enable: boolean
     email: string
     rol?: string // Enum: ADMIN, TESTER, DEVELOPER, READER (default);
+    sessionId?: string
 }

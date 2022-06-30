@@ -16,7 +16,7 @@ export const getProjectsThunk = createAsyncThunk("get/projects",
         try {
             const response = await fetch(ENDPOINT, {
                 headers: {
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
                 }
             })
             if (response.ok) {
@@ -34,7 +34,7 @@ export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
         try {
             const response = await fetch(`${ENDPOINT}${projectId}`, {
                 headers: {
-                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("email"))
+                    'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
                 }
             })
             if (response.ok) {
