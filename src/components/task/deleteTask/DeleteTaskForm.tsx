@@ -6,12 +6,16 @@ import {useNavigate} from "react-router-dom";
 import {showNotification} from "@mantine/notifications";
 import {Button, TextInput} from "@mantine/core";
 import {deleteTaskById} from "../../../redux/features/tasks/taskThunks";
+import {useSelector} from "react-redux";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {
     task: ITask
 }
 
-const DeleteTaskForm : React.FC<IProps> = ({task}) => {
+const DeleteTaskForm: React.FC<IProps> = ({task}) => {
+    const loggedUser = useSelector(selectLoggedUser())
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [taskName, setTaskName] = useState("")
@@ -20,7 +24,7 @@ const DeleteTaskForm : React.FC<IProps> = ({task}) => {
         e.preventDefault()
         if (taskName === task.name) {
             console.log("dispatch delete")
-            dispatch(deleteTaskById(id))
+            dispatch(deleteTaskById({taskId: id, user: loggedUser}))
             navigate("/dashboard")
             showNotification({
                 title: 'Task removed successfully',

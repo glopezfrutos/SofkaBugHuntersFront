@@ -8,6 +8,8 @@ import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import { showNotification } from "@mantine/notifications";
 import { useAppDispatch } from "../../redux/app/store";
 import { postUserThunk } from "../../redux/features/users/userThunks";
+import loginForm from "./LoginForm";
+import {addUserToState} from "../../redux/features/users/userSlice";
 
 
 
@@ -27,10 +29,17 @@ const LoginWithGoogle: React.FC<IProps> = () => {
                 console.log(user)
                 //dispatch
                 dispatch(postUserThunk(user.email ? user.email : ""))
-
-                //unwrap thunk, get user, dispatch action
-                //navigate
-                navigate('/dashboard')
+                    //unwrap thunk, get user, dispatch action
+                    //navigate
+                    .unwrap()
+                    .then(user => {
+                        console.log(user)
+                        dispatch(addUserToState(user))
+                        localStorage.setItem("email", user.email ? user.email : "");
+                        localStorage.setItem("sessionId", user.sessionId ? user.sessionId : "");
+                        localStorage.setItem("role", user.role ? user.role : "");
+                        navigate('/dashboard')
+                    })
             }).catch((error) => {
                 console.log(error)
                 showNotification({
