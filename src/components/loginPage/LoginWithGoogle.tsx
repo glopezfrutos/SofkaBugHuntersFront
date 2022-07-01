@@ -26,8 +26,8 @@ const LoginWithGoogle: React.FC<IProps> = () => {
                 const user = result.user;
                 console.log(user)
                 //dispatch
-                localStorage.setItem("email", user.email ? user.email : "");
                 dispatch(postUserThunk(user.email ? user.email : ""))
+
                 //unwrap thunk, get user, dispatch action
                 //navigate
                 navigate('/dashboard')
@@ -49,5 +49,3 @@ const LoginWithGoogle: React.FC<IProps> = () => {
 }
 
 export default LoginWithGoogle
-
-

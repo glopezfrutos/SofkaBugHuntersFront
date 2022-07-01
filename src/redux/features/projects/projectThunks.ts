@@ -1,7 +1,9 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {IProject} from "./projectTypes";
-import {HttpMethod} from "../../general/generalTypes";
-import {url} from "../../general/url";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { IProject } from "./projectTypes";
+import { HttpMethod } from "../../general/generalTypes";
+import { url } from "../../general/url";
+import { useNavigate } from "react-router-dom";
+import { showNotification } from "@mantine/notifications";
 
 const ENDPOINT = url + '/api/v1/project/'
 
@@ -24,6 +26,11 @@ export const getProjectsThunk = createAsyncThunk("get/projects",
             if (response.ok) {
                 return await response.json() as IProject[]
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -43,6 +50,11 @@ export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
             if (response.ok) {
                 return await response.json() as IProject
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -65,6 +77,11 @@ export const postProjectsThunk = createAsyncThunk("post/project",
             if (response.ok) {
                 return await response.json() as IProject
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -86,7 +103,15 @@ export const putProjectsThunk = createAsyncThunk("put/project",
             },
             body: JSON.stringify(project)
         })
-        return await response.json() as IProject
+        if (response.ok) {
+            return;
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
+        throw new Error(response.statusText)
     }
 )
 
@@ -104,6 +129,11 @@ export const deleteProjectThunk = createAsyncThunk("delete/project",
             if (response.ok) {
                 return projectId
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)

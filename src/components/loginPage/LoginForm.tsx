@@ -34,7 +34,6 @@ const LoginForm: React.FC<IProps> = () => {
                     const user = userCredential.user;
                     console.log(user)
                     //dispatch
-                    localStorage.setItem("email", user.email ? user.email : "");
                     dispatch(postUserThunk(user.email ? user.email : ""))
                     //navigate
                     navigate('/dashboard')
@@ -78,5 +77,3 @@ const LoginForm: React.FC<IProps> = () => {
 }
 
 export default LoginForm
-
-

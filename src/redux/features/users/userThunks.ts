@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { HttpMethod } from "../../general/generalTypes";
 import { url } from "../../general/url";
@@ -21,6 +22,7 @@ export const postUserThunk = createAsyncThunk("post/user",
                 const data = await response.json() as IUser
                 localStorage.setItem("sessionId", data.sessionId ? data.sessionId : "");
                 localStorage.setItem("role", data.role ? data.role : "");
+                localStorage.setItem("email", data.email ? data.email : "");
                 return data
             }
             throw new Error(response.statusText)
@@ -37,7 +39,14 @@ export const getUsersThunk = createAsyncThunk("get/users",
                 'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             }
         })
-        return await response.json() as IUser[]
+        if (response.ok) {
+            return await response.json() as IUser[]
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -57,6 +66,11 @@ export const putUserThunk = createAsyncThunk("put/user",
             if (response.ok) {
                 return await response.json() as IUser
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)

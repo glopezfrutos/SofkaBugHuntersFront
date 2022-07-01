@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ITask} from "./taskTypes";
 import {HttpMethod} from "../../general/generalTypes";
 import {url} from "../../general/url";
+import { showNotification } from "@mantine/notifications";
 
 const GET_CHILDREN_TASKS = url + '/api/v1/project/'
 const TASK_ENDPOINT = url + '/api/v1/task/'
@@ -21,6 +22,11 @@ export const getChildrenTasks = createAsyncThunk("get/childrenTask",
             if (response.ok) {
                 return await response.json() as ITask[]
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             // throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -36,7 +42,14 @@ export const getTaskById = createAsyncThunk('get/taskById',
 
             }
         })
-        return await response.json() as ITask
+        if (response.ok) {
+            return await response.json() as ITask
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -54,6 +67,11 @@ export const deleteTaskById = createAsyncThunk('delete/task',
         if (response.ok) {
             return taskId
         }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -69,7 +87,14 @@ export const postTaskThunk = createAsyncThunk('post/task',
             method: HttpMethod.POST,
             body: JSON.stringify(task)
         })
-        return await response.json() as ITask
+        if (response.ok) {
+            return await response.json() as ITask
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -86,6 +111,13 @@ export const putTaskThunk = createAsyncThunk('put/task',
             method: HttpMethod.POST,
             body: JSON.stringify(task)
         })
-        return await response.json() as ITask
+        if (response.ok) {
+            return await response.json() as ITask
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
