@@ -26,13 +26,21 @@ export const getProjectsThunk = createAsyncThunk("get/projects",
     }
 )
 
+export interface IProjectAuth {
+    user: IUser
+    projectId?: string
+    project?: IProject
+}
+
 export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
-    async (projectId: string) => {
+    async (projectAuth: IProjectAuth) => {
+        const {user, projectId} = projectAuth
+
         try {
             const response = await fetch(`${ENDPOINT}${projectId}`, {
                 headers: {
-                    'Authorization': authBasic
-
+                    // 'Authorization': authBasic
+                    'Authorization': 'Basic ' + window.btoa(user.email + ':' + user.sessionId)
                 }
             })
             if (response.ok) {
@@ -44,16 +52,19 @@ export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
         }
     }
 )
-
+//temporal fix
 export const postProjectsThunk = createAsyncThunk("post/project",
-    async (project: IProject) => {
+    async (projectAuth: IProjectAuth) => {
+        const {user, project} = projectAuth
+
         try {
             const response = await fetch(ENDPOINT, {
                 method: HttpMethod.POST,
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': authBasic
+                    // 'Authorization': authBasic
+                    'Authorization': 'Basic ' + window.btoa(user.email + ':' + user.sessionId)
                 },
                 body: JSON.stringify(project)
             })
@@ -67,16 +78,20 @@ export const postProjectsThunk = createAsyncThunk("post/project",
     }
 )
 
-
+//temporal fix
 export const putProjectsThunk = createAsyncThunk("put/project",
-    async (project: IProject) => {
+    async (projectAuth: IProjectAuth) => {
+        const {user, project} = projectAuth
+
         const response = await fetch(ENDPOINT, {
+
             //It should be POST since the backend does not have PUT
             method: HttpMethod.POST,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': authBasic
+                // 'Authorization': authBasic
+                'Authorization': 'Basic ' + window.btoa(user.email + ':' + user.sessionId)
 
             },
             body: JSON.stringify(project)
@@ -85,15 +100,19 @@ export const putProjectsThunk = createAsyncThunk("put/project",
     }
 )
 
+//temporal fix
 export const deleteProjectThunk = createAsyncThunk("delete/project",
-    async (projectId: string) => {
+    async (projectAuth: IProjectAuth) => {
+    const {user, projectId} = projectAuth
         try {
             const response = await fetch(`${ENDPOINT}${projectId}`, {
                 method: HttpMethod.DELETE,
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': authBasic
+                    // 'Authorization': authBasic
+                    'Authorization': 'Basic ' + window.btoa(user.email + ':' + user.sessionId)
+
                 },
             })
             if (response.ok) {

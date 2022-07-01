@@ -12,14 +12,16 @@ import {getChildrenTasks} from "../../../redux/features/tasks/taskThunks";
 import ProjectDetails from "./ProjectDetails";
 import TaskList from "../../task/showTask/TaskList";
 import UpdateProjectForm from "../updateProject/UpdateProjectForm";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {}
 
 const ProjectDetailTabs : React.FC<IProps> = () => {
     const params = useParams()
     const dispatch = useAppDispatch()
+    const loggedUser = useSelector(selectLoggedUser())
     useEffect(() => {
-        dispatch(getOneProjectByIdThunk(params.projectId!))
+        dispatch(getOneProjectByIdThunk({user: loggedUser, projectId: params.projectId!}))
         dispatch(getChildrenTasks(params.projectId!))
     }, [])
     const projectChosen = useSelector(selectProjectChosen())
