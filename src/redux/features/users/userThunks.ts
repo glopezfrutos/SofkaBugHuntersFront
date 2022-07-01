@@ -1,4 +1,3 @@
-
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {HttpMethod} from "../../general/generalTypes";
 import {url} from "../../general/url";
@@ -35,9 +34,7 @@ export const getUsersThunk = createAsyncThunk("get/users",
                 'Authorization': 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
             }
         })
-        if (response.ok) {
-            return await response.json() as IUser[]
-        }
+        return await response.json() as IUser[]
 
     }
 )

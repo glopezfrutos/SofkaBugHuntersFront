@@ -48,11 +48,7 @@ export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
             if (response.ok) {
                 return await response.json() as IProject
             }
-            showNotification({
-                color: 'red',
-                title: 'Oops',
-                message: "There's something wrong with your credentials! Please log in again.",
-            })
+
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -78,11 +74,7 @@ export const postProjectsThunk = createAsyncThunk("post/project",
             if (response.ok) {
                 return await response.json() as IProject
             }
-            showNotification({
-                color: 'red',
-                title: 'Oops',
-                message: "There's something wrong with your credentials! Please log in again.",
-            })
+
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -108,15 +100,8 @@ export const putProjectsThunk = createAsyncThunk("put/project",
             },
             body: JSON.stringify(project)
         })
-        if (response.ok) {
-            return;
-        }
-        showNotification({
-            color: 'red',
-            title: 'Oops',
-            message: "There's something wrong with your credentials! Please log in again.",
-        })
-        throw new Error(response.statusText)
+        return await response.json() as IProject
+
     }
 )
 
@@ -138,11 +123,7 @@ export const deleteProjectThunk = createAsyncThunk("delete/project",
             if (response.ok) {
                 return projectId
             }
-            showNotification({
-                color: 'red',
-                title: 'Oops',
-                message: "There's something wrong with your credentials! Please log in again.",
-            })
+
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
