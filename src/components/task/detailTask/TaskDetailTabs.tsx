@@ -24,7 +24,7 @@ const TaskDetailTabs: React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getTaskById({taskId:params.taskId!, user: loggedUser}))
-        dispatch(getChildrenBugs(params.taskId!))
+        dispatch(getChildrenBugs({taskId: params.taskId!, user: loggedUser}))
     }, [])
     const taskChosen = useSelector(selectTaskChosen())
     const bugsList = useSelector(selectBugList())
