@@ -11,7 +11,7 @@ import {formatDate} from "../../../utils/dateUtils";
 import {IProject} from "../../../redux/features/projects/projectTypes";
 import {getUsersThunk} from "../../../redux/features/users/userThunks";
 import {useSelector} from "react-redux";
-import {selectUserList} from "../../../redux/features/users/userSlice";
+import {selectLoggedUser, selectUserList} from "../../../redux/features/users/userSlice";
 
 interface IProps {
 }
@@ -19,6 +19,8 @@ interface IProps {
 const CreateProjectForm: React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
+    const loggedUser = useSelector(selectLoggedUser())
+
     const form = useForm({
         initialValues: {
             name: '',
@@ -51,7 +53,7 @@ const CreateProjectForm: React.FC<IProps> = () => {
                 createdAt: formatDate(new Date()),
                 closedAt: checkDate
             }
-            dispatch(postProjectsThunk(newProject))
+            dispatch(postProjectsThunk({user: loggedUser, project: newProject}))
             showNotification({
                 title: 'Project added successfully',
                 message: 'The project was saved!',

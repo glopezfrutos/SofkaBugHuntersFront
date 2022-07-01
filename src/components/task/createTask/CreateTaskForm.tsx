@@ -6,7 +6,7 @@ import {useForm} from "@mantine/form";
 import {IProject} from "../../../redux/features/projects/projectTypes";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useSelector} from "react-redux";
-import {selectUserList} from "../../../redux/features/users/userSlice";
+import {selectLoggedUser, selectUserList} from "../../../redux/features/users/userSlice";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
 import {ITask} from "../../../redux/features/tasks/taskTypes";
@@ -20,6 +20,8 @@ interface IProps {
 const CreateTaskForm: React.FC<IProps> = ({project}) => {
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
+    const loggedUser = useSelector(selectLoggedUser())
+
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
     const [, setResponsibleEmailData] = useState([] as string[]);
@@ -58,7 +60,7 @@ const CreateTaskForm: React.FC<IProps> = ({project}) => {
                 additionalFilesId,
                 responsibleEmail,
             }
-            dispatch(postTaskThunk(newTask))
+            dispatch(postTaskThunk({task: newTask, user: loggedUser}))
             showNotification({
                 title: 'Task added successfully',
                 message: 'The task was saved!',

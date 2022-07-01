@@ -7,6 +7,8 @@ import ProjectCard from "./ProjectCard";
 import {useEffect} from "react";
 import {useAppDispatch} from "../../../redux/app/store";
 import {getProjectsThunk} from "../../../redux/features/projects/projectThunks";
+import ErrorComponent from "../../errors/ErrorComponent";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {
 }
@@ -15,10 +17,11 @@ const ProjectList: React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
     const projectList = useSelector(selectProjectList())
     const status = useSelector(selectProjectFetchStatus())
+    const loggedUser = useSelector(selectLoggedUser())
 
     useEffect(() => {
-        dispatch(getProjectsThunk())
-    }, [])
+        dispatch(getProjectsThunk(loggedUser))
+    }, [loggedUser])
 
     const loader =
         <Center>
@@ -33,7 +36,7 @@ const ProjectList: React.FC<IProps> = () => {
     return <>
         {status === fetchStatus.PENDING && loader}
         {status === fetchStatus.FULFILLED && grid}
-        {status === fetchStatus.REJECTED && <div>Error while fetching</div>}
+        {status === fetchStatus.REJECTED && <ErrorComponent/>}
     </>
 }
 

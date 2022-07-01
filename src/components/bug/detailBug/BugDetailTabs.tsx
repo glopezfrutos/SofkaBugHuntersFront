@@ -10,14 +10,17 @@ import {useSelector} from "react-redux";
 import {selectBugChosen} from "../../../redux/features/bugs/bugSlice";
 import BugSpecificDetails from "./BugSpecificDetails";
 import UpdateBugForm from "../updateBug/UpdateBugForm";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {}
 
 const BugDetailTabs : React.FC<IProps> = () => {
+    const loggedUser = useSelector(selectLoggedUser())
+
     const params = useParams()
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(getBugById(params.bugId!))
+        dispatch(getBugById({bugId: params.bugId!, user: loggedUser}))
     }, [])
     const bugChosen = useSelector(selectBugChosen())
     return <>

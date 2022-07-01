@@ -3,6 +3,8 @@ import {ClipboardText, Home, Users} from 'tabler-icons-react';
 import {Group, Text, ThemeIcon, UnstyledButton} from '@mantine/core';
 import {useNavigate} from "react-router-dom";
 import {useLocalStorage} from "@mantine/hooks";
+import {useSelector} from "react-redux";
+import {selectLoggedUser} from "../../../../redux/features/users/userSlice";
 
 interface MainLinkProps {
     icon: React.ReactNode;
@@ -49,7 +51,9 @@ const data = [
 ];
 
 export function MainLinks() {
-    const role = localStorage.getItem("role") || "READER"
+    // const role = localStorage.getItem("role") || "READER"
+    const loggedUser = useSelector(selectLoggedUser())
+    const role = loggedUser.role ? loggedUser.role : ''
     const links = data.filter(value => value.roles.includes(role)).map((link) => <MainLink {...link} key={link.label} />);
     return <div>{links}</div>;
 }

@@ -6,12 +6,16 @@ import {deleteProjectThunk} from "../../../redux/features/projects/projectThunks
 import {useAppDispatch} from "../../../redux/app/store";
 import {useNavigate} from "react-router-dom";
 import {showNotification} from "@mantine/notifications";
+import {useSelector} from "react-redux";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {
     project: IProject
 }
 
 const DeleteProjectForm: React.FC<IProps> = ({project}) => {
+    const loggedUser = useSelector(selectLoggedUser())
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [projectName, setProjectName] = useState("")
@@ -20,7 +24,7 @@ const DeleteProjectForm: React.FC<IProps> = ({project}) => {
         e.preventDefault()
         if (projectName === project.name) {
             console.log("dispatch delete")
-            dispatch(deleteProjectThunk(id))
+            dispatch(deleteProjectThunk({projectId: id, user: loggedUser}))
             navigate("/dashboard")
             showNotification({
                 title: 'Project removed successfully',

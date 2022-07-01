@@ -2,7 +2,7 @@ import * as React from "react"
 import {useMemo} from "react"
 import {useAppDispatch} from "../../../redux/app/store";
 import {useSelector} from "react-redux";
-import {selectUserList} from "../../../redux/features/users/userSlice";
+import {selectLoggedUser, selectUserList} from "../../../redux/features/users/userSlice";
 import {useForm} from "@mantine/form";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
@@ -18,7 +18,9 @@ interface IProps {
 }
 
 const UpdateBugForm : React.FC<IProps> = ({bug}) => {
-    const DUMMY_EMAIL = "dummyEmail@gmail.com"
+    const loggedUser = useSelector(selectLoggedUser())
+
+    const DUMMY_EMAIL = loggedUser.email
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
     const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
@@ -90,7 +92,7 @@ const UpdateBugForm : React.FC<IProps> = ({bug}) => {
                 status,
             }
             console.log(bugToUpdate)
-            dispatch(putBugThunk(bugToUpdate))
+            dispatch(putBugThunk({bug: bugToUpdate, user: loggedUser}))
             showNotification({
                 title: 'Bug updated successfully',
                 message: 'The bug was saved!',

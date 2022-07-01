@@ -3,16 +3,19 @@ import {useState} from "react"
 import {Button, TextInput} from "@mantine/core";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useNavigate} from "react-router-dom";
-import {deleteTaskById} from "../../../redux/features/tasks/taskThunks";
 import {showNotification} from "@mantine/notifications";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
 import {deleteBugById} from "../../../redux/features/bugs/bugThunks";
+import {useSelector} from "react-redux";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {
     bug:IBug
 }
 
 const DeleteBugForm : React.FC<IProps> = ({bug}) => {
+    const loggedUser = useSelector(selectLoggedUser())
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [bugName, setBugName] = useState("")
@@ -20,7 +23,7 @@ const DeleteBugForm : React.FC<IProps> = ({bug}) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
         if (bugName === bug.title) {
-            dispatch(deleteBugById(id))
+            dispatch(deleteBugById({bugId: id, user: loggedUser}))
             navigate("/dashboard")
             showNotification({
                 title: 'Bug removed successfully',

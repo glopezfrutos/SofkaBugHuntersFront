@@ -6,7 +6,7 @@ import {useForm} from "@mantine/form";
 import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useSelector} from "react-redux";
-import {selectUserList} from "../../../redux/features/users/userSlice";
+import {selectLoggedUser, selectUserList} from "../../../redux/features/users/userSlice";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
@@ -19,7 +19,9 @@ interface IProps {
 }
 
 const BugForm: React.FC<IProps> = ({task}) => {
-    const DUMMY_EMAIL = "dummyEmail@gmail.com"
+    const loggedUser = useSelector(selectLoggedUser())
+
+    const DUMMY_EMAIL = loggedUser.email
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
     const responsableSelectData = useMemo(() => usersList.map(user => user.email), [usersList])
@@ -87,7 +89,7 @@ const BugForm: React.FC<IProps> = ({task}) => {
                 solutionResponsible: responsableEmail,
             }
             console.log(newBug)
-            dispatch(postBugThunk(newBug))
+            dispatch(postBugThunk({bug: newBug, user: loggedUser}))
             showNotification({
                 title: 'Bug added successfully',
                 message: 'The bug was saved!',
