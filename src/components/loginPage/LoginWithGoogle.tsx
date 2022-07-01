@@ -40,7 +40,6 @@ const LoginWithGoogle: React.FC<IProps> = () => {
                         localStorage.setItem("role", user.role ? user.role : "");
                         navigate('/dashboard')
                     })
-
             }).catch((error) => {
                 console.log(error)
                 showNotification({
@@ -59,5 +58,3 @@ const LoginWithGoogle: React.FC<IProps> = () => {
 }
 
 export default LoginWithGoogle
-
-

@@ -4,6 +4,7 @@ import {HttpMethod} from "../../general/generalTypes";
 import {url} from "../../general/url";
 import {IUser} from "../users/userTypes";
 
+
 const ENDPOINT = url + '/api/v1/project/'
 ///api/v1/history/project/{id}
 
@@ -23,6 +24,7 @@ export const getProjectsThunk = createAsyncThunk("get/projects",
             }
         })
         return await response.json() as IProject[]
+
     }
 )
 
@@ -46,6 +48,11 @@ export const getOneProjectByIdThunk = createAsyncThunk("get/singleProject",
             if (response.ok) {
                 return await response.json() as IProject
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -71,6 +78,11 @@ export const postProjectsThunk = createAsyncThunk("post/project",
             if (response.ok) {
                 return await response.json() as IProject
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -96,7 +108,15 @@ export const putProjectsThunk = createAsyncThunk("put/project",
             },
             body: JSON.stringify(project)
         })
-        return await response.json() as IProject
+        if (response.ok) {
+            return;
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
+        throw new Error(response.statusText)
     }
 )
 
@@ -118,6 +138,11 @@ export const deleteProjectThunk = createAsyncThunk("delete/project",
             if (response.ok) {
                 return projectId
             }
+            showNotification({
+                color: 'red',
+                title: 'Oops',
+                message: "There's something wrong with your credentials! Please log in again.",
+            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
