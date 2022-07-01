@@ -38,11 +38,7 @@ export const getUsersThunk = createAsyncThunk("get/users",
         if (response.ok) {
             return await response.json() as IUser[]
         }
-        showNotification({
-            color: 'red',
-            title: 'Oops',
-            message: "There's something wrong with your credentials! Please log in again.",
-        })
+
     }
 )
 
@@ -62,11 +58,6 @@ export const putUserThunk = createAsyncThunk("put/user",
             if (response.ok) {
                 return await response.json() as IUser
             }
-            showNotification({
-                color: 'red',
-                title: 'Oops',
-                message: "There's something wrong with your credentials! Please log in again.",
-            })
             throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
