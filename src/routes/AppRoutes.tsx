@@ -18,9 +18,9 @@ const AppRoutes: React.FC<IProps> = () => {
     return <BrowserRouter>
         <Routes>
             <Route path='/' element={<LoginPage/>}/>
-            <Route path='/usermanagement' element={<UserManagement/>}/>
             <Route path="/dashboard" element={<DashboardShell/>}>
                 <Route index element={<ProjectCharts/>}/>
+                <Route path='user-management' element={<UserManagement/>}/>
                 <Route path='add-project' element={<AddProject/>}/>
                 <Route path='all-projects' element={<ProjectsPage/>}/>
                 <Route path='project/:projectId' element={<ProjectDetailsPage/>}/>
