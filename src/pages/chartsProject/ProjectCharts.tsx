@@ -10,7 +10,7 @@ const ProjectCharts : React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
     const refreshProjects = () => {
         console.log("refreshed")
-        dispatch(getProjectsThunk())
+        // dispatch(getProjectsThunk())
     }
     const TWO_MINUTES = 120000
     const interval = useInterval(() => refreshProjects(), TWO_MINUTES);
