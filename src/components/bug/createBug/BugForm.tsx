@@ -92,6 +92,7 @@ const BugForm: React.FC<IProps> = ({task}) => {
                 title: 'Bug added successfully',
                 message: 'The bug was saved!',
             })
+            return
         }
         showNotification({
             title: 'There is an error on the form!',

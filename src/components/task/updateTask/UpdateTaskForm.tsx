@@ -137,7 +137,6 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
                     label="Task status"
                     placeholder="Pick one"
                     data={[
-                        {value: 'CREATED', label: 'Created'},
                         {value: 'OPENED', label: 'Opened'},
                         {value: 'CLOSED', label: 'Closed'},
                         {value: 'BLOCKED', label: 'Blocked'},
