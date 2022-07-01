@@ -13,7 +13,7 @@ const authBasic = 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + l
 
 interface ITaskAuth {
     user: IUser
-    projectId ?: string
+    projectId?: string
     taskId?: string
     task?: ITask
 }
@@ -21,7 +21,7 @@ interface ITaskAuth {
 //temporal fixed
 export const getChildrenTasks = createAsyncThunk("get/childrenTask",
     async (taskAuth: ITaskAuth) => {
-    const {user, projectId } = taskAuth
+        const {user, projectId} = taskAuth
         try {
             const response = await fetch(`${GET_CHILDREN_TASKS}${projectId}/task`, {
                 headers: {
@@ -32,11 +32,7 @@ export const getChildrenTasks = createAsyncThunk("get/childrenTask",
             if (response.ok) {
                 return await response.json() as ITask[]
             }
-            showNotification({
-                color: 'red',
-                title: 'Oops',
-                message: "There's something wrong with your credentials! Please log in again.",
-            })
+
             // throw new Error(response.statusText)
         } catch (e) {
             console.log(e)
@@ -47,7 +43,7 @@ export const getChildrenTasks = createAsyncThunk("get/childrenTask",
 //temporal fixed
 export const getTaskById = createAsyncThunk('get/taskById',
     async (taskAuth: ITaskAuth) => {
-        const {user, taskId } = taskAuth
+        const {user, taskId} = taskAuth
         const response = await fetch(`${TASK_ENDPOINT}${taskId}`, {
             headers: {
                 // 'Authorization': authBasic
@@ -55,20 +51,14 @@ export const getTaskById = createAsyncThunk('get/taskById',
 
             }
         })
-        if (response.ok) {
-            return await response.json() as ITask
-        }
-        showNotification({
-            color: 'red',
-            title: 'Oops',
-            message: "There's something wrong with your credentials! Please log in again.",
-        })
+        return await response.json() as ITask
+
     }
 )
 //temporal fixed
 export const deleteTaskById = createAsyncThunk('delete/task',
     async (taskAuth: ITaskAuth) => {
-        const {user, taskId } = taskAuth
+        const {user, taskId} = taskAuth
         const response = await fetch(`${TASK_ENDPOINT}${taskId}`, {
             method: HttpMethod.DELETE,
             headers: {
@@ -83,18 +73,14 @@ export const deleteTaskById = createAsyncThunk('delete/task',
         if (response.ok) {
             return taskId
         }
-        showNotification({
-            color: 'red',
-            title: 'Oops',
-            message: "There's something wrong with your credentials! Please log in again.",
-        })
+
     }
 )
 
 //temporal fixed
 export const postTaskThunk = createAsyncThunk('post/task',
     async (taskAuth: ITaskAuth) => {
-        const {user, task } = taskAuth
+        const {user, task} = taskAuth
         const response = await fetch(TASK_ENDPOINT, {
             headers: {
                 Accept: 'application/json',
@@ -105,21 +91,15 @@ export const postTaskThunk = createAsyncThunk('post/task',
             method: HttpMethod.POST,
             body: JSON.stringify(task)
         })
-        if (response.ok) {
-            return await response.json() as ITask
-        }
-        showNotification({
-            color: 'red',
-            title: 'Oops',
-            message: "There's something wrong with your credentials! Please log in again.",
-        })
+        return await response.json() as ITask
+
     }
 )
 
 //temporal fixed
 export const putTaskThunk = createAsyncThunk('put/task',
     async (taskAuth: ITaskAuth) => {
-        const {user, task } = taskAuth
+        const {user, task} = taskAuth
         const response = await fetch(TASK_ENDPOINT, {
             headers: {
                 Accept: 'application/json',
@@ -131,13 +111,7 @@ export const putTaskThunk = createAsyncThunk('put/task',
             method: HttpMethod.POST,
             body: JSON.stringify(task)
         })
-        if (response.ok) {
-            return await response.json() as ITask
-        }
-        showNotification({
-            color: 'red',
-            title: 'Oops',
-            message: "There's something wrong with your credentials! Please log in again.",
-        })
+        return await response.json() as ITask
+
     }
 )
