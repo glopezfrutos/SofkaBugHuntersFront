@@ -14,9 +14,9 @@ interface IProps {
 
 const UpdateUserRoleForm: React.FC<IProps> = () => {
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getUsersThunk())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(getUsersThunk())
+    // }, [dispatch])
     const usersList = useSelector(selectUserList())
     const userEmail = useMemo(() => usersList.map(user => user.email), [usersList])
 
@@ -65,7 +65,7 @@ const UpdateUserRoleForm: React.FC<IProps> = () => {
 
                 <Select
                     required
-                    label="Pick a lifecycle"
+                    label="Pick a role"
                     placeholder="Pick one"
                     data={roleData}
                     {...form.getInputProps('role')}
