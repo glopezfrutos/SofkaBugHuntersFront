@@ -21,6 +21,7 @@ export const postUserThunk = createAsyncThunk("post/user",
                 const data = await response.json() as IUser
                 localStorage.setItem("sessionId", data.sessionId ? data.sessionId : "");
                 localStorage.setItem("role", data.role ? data.role : "");
+                localStorage.setItem("email", data.email ? data.email : "");
                 return data
             }
             throw new Error(response.statusText)
