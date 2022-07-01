@@ -8,6 +8,7 @@ import { showNotification } from "@mantine/notifications";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from "../../redux/app/store";
 import { postUserThunk } from "../../redux/features/users/userThunks";
+import {addUserToState} from "../../redux/features/users/userSlice";
 
 
 interface IProps {
@@ -35,8 +36,14 @@ const LoginForm: React.FC<IProps> = () => {
                     console.log(user)
                     //dispatch
                     dispatch(postUserThunk(user.email ? user.email : ""))
-                    //navigate
-                    navigate('/dashboard')
+                        .unwrap()
+                        .then(user => {
+                            dispatch(addUserToState(user))
+                            localStorage.setItem("email", user.email ? user.email : "");
+                            localStorage.setItem("sessionId", user.sessionId ? user.sessionId : "");
+                            localStorage.setItem("role", user.role ? user.role : "");
+                            navigate('/dashboard')
+                        })
                 })
                 .catch((error) => {
                     console.log(error.message)
