@@ -2,8 +2,10 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IProject} from "./projectTypes";
 import {HttpMethod} from "../../general/generalTypes";
 import {url} from "../../general/url";
+import {IUser} from "../users/userTypes";
 
 const ENDPOINT = url + '/api/v1/project/'
+///api/v1/history/project/{id}
 
 // export interface IResponse {
 //     data: IProject[]
@@ -12,22 +14,15 @@ const ENDPOINT = url + '/api/v1/project/'
 
 const authBasic = 'Basic ' + window.btoa(localStorage.getItem("email") + ':' + localStorage.getItem("sessionId"))
 
-
 export const getProjectsThunk = createAsyncThunk("get/projects",
-    async () => {
-        try {
-            const response = await fetch(ENDPOINT, {
-                headers: {
-                    'Authorization': authBasic
-                }
-            })
-            if (response.ok) {
-                return await response.json() as IProject[]
+    async (user: IUser) => {
+        const response = await fetch(ENDPOINT, {
+            headers: {
+                // 'Authorization': authBasic
+                'Authorization': 'Basic ' + window.btoa(user.email + ':' + user.sessionId)
             }
-            throw new Error(response.statusText)
-        } catch (e) {
-            console.log(e)
-        }
+        })
+        return await response.json() as IProject[]
     }
 )
 
