@@ -8,6 +8,7 @@ import { getUsersThunk, putUserThunk } from "../../redux/features/users/userThun
 import { useSelector } from "react-redux";
 import { selectUserList } from "../../redux/features/users/userSlice";
 import { IUser } from "../../redux/features/users/userTypes";
+import { Link } from "react-router-dom";
 
 interface IProps {
 }
@@ -65,11 +66,16 @@ const UpdateUserRoleForm: React.FC<IProps> = () => {
 
                 <Select
                     required
-                    label="Pick a lifecycle"
+                    label="Pick a role"
                     placeholder="Pick one"
                     data={roleData}
                     {...form.getInputProps('role')}
                 />
+                <Button<typeof Link> component={Link} to="/dashboard"
+                color='red'
+                radius='lg'
+                mt='xs'
+                >Go back</Button>
                 <Button
                     color='blue'
                     radius='lg'
