@@ -3,7 +3,6 @@ import {useState} from "react"
 import {Button, TextInput} from "@mantine/core";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useNavigate} from "react-router-dom";
-import {deleteTaskById} from "../../../redux/features/tasks/taskThunks";
 import {showNotification} from "@mantine/notifications";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
 import {deleteBugById} from "../../../redux/features/bugs/bugThunks";

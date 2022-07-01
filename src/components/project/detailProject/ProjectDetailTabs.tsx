@@ -22,7 +22,7 @@ const ProjectDetailTabs : React.FC<IProps> = () => {
     const loggedUser = useSelector(selectLoggedUser())
     useEffect(() => {
         dispatch(getOneProjectByIdThunk({user: loggedUser, projectId: params.projectId!}))
-        dispatch(getChildrenTasks(params.projectId!))
+        dispatch(getChildrenTasks({user: loggedUser, projectId: params.projectId!}))
     }, [])
     const projectChosen = useSelector(selectProjectChosen())
     const taskList = useSelector(selectTaskList())

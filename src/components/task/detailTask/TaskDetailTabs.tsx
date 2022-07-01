@@ -12,16 +12,18 @@ import {selectBugList} from "../../../redux/features/bugs/bugSlice";
 import TaskDetails from "./TaskDetails";
 import BugList from "../../bug/showBugs/BugList";
 import UpdateTaskForm from "../updateTask/UpdateTaskForm";
+import {selectLoggedUser} from "../../../redux/features/users/userSlice";
 
 interface IProps {
 }
 
 const TaskDetailTabs: React.FC<IProps> = () => {
     //dispatch getTaskById
+    const loggedUser = useSelector(selectLoggedUser())
     const params = useParams()
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(getTaskById(params.taskId!))
+        dispatch(getTaskById({taskId:params.taskId!, user: loggedUser}))
         dispatch(getChildrenBugs(params.taskId!))
     }, [])
     const taskChosen = useSelector(selectTaskChosen())

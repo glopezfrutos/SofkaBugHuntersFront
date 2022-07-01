@@ -3,7 +3,7 @@ import {useMemo, useState} from "react"
 import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useSelector} from "react-redux";
-import {selectUserList} from "../../../redux/features/users/userSlice";
+import {selectLoggedUser, selectUserList} from "../../../redux/features/users/userSlice";
 import {useForm} from "@mantine/form";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
@@ -19,6 +19,8 @@ interface IProps {
 const UpdateTaskForm : React.FC<IProps> = ({task}) => {
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
+    const loggedUser = useSelector(selectLoggedUser())
+
     //multiple select data
     const [tagsData, setTagsData] = useState(['Programming', 'Java', 'Javascript', 'QA']);
     const [, setResponsibleEmailData] = useState([] as string[]);
@@ -60,7 +62,7 @@ const UpdateTaskForm : React.FC<IProps> = ({task}) => {
                 responsibleEmail,
                 status,
             }
-            dispatch(putTaskThunk(taskToUpdate))
+            dispatch(putTaskThunk({task: taskToUpdate, user: loggedUser}))
             showNotification({
                 title: 'Task updated successfully',
                 message: 'The task was updated!',
