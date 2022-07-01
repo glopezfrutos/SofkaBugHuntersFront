@@ -1,24 +1,23 @@
 import * as React from "react"
 import {useMemo} from "react"
-import {Button, Container, Select, Textarea, TextInput} from "@mantine/core";
-import {DatePicker} from "@mantine/dates";
-import {useForm} from "@mantine/form";
-import {ITask} from "../../../redux/features/tasks/taskTypes";
 import {useAppDispatch} from "../../../redux/app/store";
 import {useSelector} from "react-redux";
 import {selectUserList} from "../../../redux/features/users/userSlice";
+import {useForm} from "@mantine/form";
 import dayjs from "dayjs";
 import {formatDate} from "../../../utils/dateUtils";
 import {IBug} from "../../../redux/features/bugs/bugTypes";
-import {postBugThunk} from "../../../redux/features/bugs/bugThunks";
+import {putBugThunk} from "../../../redux/features/bugs/bugThunks";
 import {showNotification} from "@mantine/notifications";
-import {levelSelectData, lifeCycleSelectData} from "../sharedBugData";
+import {Button, Container, Select, Textarea, TextInput} from "@mantine/core";
+import {bugSelectData, levelSelectData, lifeCycleSelectData} from "../sharedBugData";
+import {DatePicker} from "@mantine/dates";
 
 interface IProps {
-    task: ITask
+    bug: IBug
 }
 
-const BugForm: React.FC<IProps> = ({task}) => {
+const UpdateBugForm : React.FC<IProps> = ({bug}) => {
     const DUMMY_EMAIL = "dummyEmail@gmail.com"
     const dispatch = useAppDispatch()
     const usersList = useSelector(selectUserList())
@@ -26,20 +25,21 @@ const BugForm: React.FC<IProps> = ({task}) => {
 
     const form = useForm({
         initialValues: {
-            title: '',
-            description: '',
-            responsableEmail: '',
-            discoverAt: '',
-            contextInfo: '',
-            links: '',
-            severity: '',
-            priority: '',
-            clientImportance: '',
+            title: bug.title,
+            description: bug.description,
+            responsableEmail: bug.solutionResponsible,
+            discoverAt: bug.lifecycle,
+            contextInfo: bug.contextInfo,
+            links: bug.additionalFile,
+            severity: bug.severity,
+            priority: bug.priority,
+            clientImportance: bug.clientImportance,
             endDate: new Date(),
-            conclusion: '',
-            globalProblems: '',
-            references: '',
-            developerObservations: '',
+            conclusion: bug.conclusion,
+            globalProblems: bug.globalIssues,
+            references: bug.references,
+            developerObservations: bug.developerObservations,
+            status: bug.status
         },
     })
 
@@ -59,18 +59,20 @@ const BugForm: React.FC<IProps> = ({task}) => {
             globalProblems,
             conclusion,
             links,
-            references
+            references,
+            status
 
         } = form.values
-        const areValid = [title, description,responsableEmail,contextInfo, severity, priority, clientImportance, discoverAt].every(Boolean)
+        const areValid = [title, description,responsableEmail,contextInfo, severity, priority, clientImportance, discoverAt, status].every(Boolean)
         const isBefore = dayjs().isBefore(dayjs(endDate))
         if (areValid) {
             const checkDate = isBefore ? formatDate(endDate) : ''
-            const newBug: IBug = {
-                projectId: task.projectId,
-                taskId: task.id!,
+            const bugToUpdate: IBug = {
+                id: bug.id,
+                projectId: bug.projectId,
+                taskId: bug.taskId,
                 closedAt: checkDate,
-                createdAt: formatDate(new Date()),
+                createdAt: bug.createdAt,
                 clientImportance: clientImportance,
                 title,
                 developerObservations,
@@ -83,13 +85,14 @@ const BugForm: React.FC<IProps> = ({task}) => {
                 globalIssues: globalProblems,
                 references,
                 conclusion,
-                responsible: DUMMY_EMAIL,
+                responsible: bug.responsible,
                 solutionResponsible: responsableEmail,
+                status,
             }
-            console.log(newBug)
-            dispatch(postBugThunk(newBug))
+            console.log(bugToUpdate)
+            dispatch(putBugThunk(bugToUpdate))
             showNotification({
-                title: 'Bug added successfully',
+                title: 'Bug updated successfully',
                 message: 'The bug was saved!',
             })
             return
@@ -125,7 +128,7 @@ const BugForm: React.FC<IProps> = ({task}) => {
                 <Select
                     required
                     searchable
-                    label="Pick a responsable"
+                    label="Pick a responsible"
                     placeholder="Pick one"
                     data={responsableSelectData}
                     {...form.getInputProps('responsableEmail')}
@@ -140,7 +143,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     {...form.getInputProps('contextInfo')}
                     required
                 />
-                {/*(Planificación; Análisis; Diseño; Implementación; Pruebas; Despliegue; Uso o mantenimiento). */}
                 <Select
                     required
                     label="Pick a lifecycle"
@@ -178,7 +180,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     data={levelSelectData}
                     {...form.getInputProps('clientImportance')}
                 />
-                {/*Huge text areas*/}
                 <Textarea
                     placeholder="Conclusion..."
                     label="Conclusion"
@@ -212,7 +213,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     {...form.getInputProps('endDate')}
 
                 />
-                {/*Debe estar habilitado para las modificaciones donde interactúe el desarrollador según el ciclo de vida de los defectos sugerido en este documento.*/}
                 <Textarea
                     placeholder="Some observations..."
                     label="Developer observations"
@@ -221,6 +221,13 @@ const BugForm: React.FC<IProps> = ({task}) => {
                     maxRows={4}
                     maxLength={5000}
                     {...form.getInputProps('developerObservations')}
+                />
+                <Select
+                    required
+                    label="Pick a lifecycle"
+                    placeholder="Pick one"
+                    data={bugSelectData}
+                    {...form.getInputProps('status')}
                 />
                 <Button
                     color='blue'
@@ -233,6 +240,6 @@ const BugForm: React.FC<IProps> = ({task}) => {
     </>
 }
 
-export default BugForm
+export default UpdateBugForm
 
 

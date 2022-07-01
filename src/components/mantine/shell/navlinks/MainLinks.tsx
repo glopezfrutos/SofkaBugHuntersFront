@@ -1,7 +1,8 @@
 import React from 'react';
-import {Book2, ClipboardText, Home} from 'tabler-icons-react';
+import {ClipboardText, Home, Users} from 'tabler-icons-react';
 import {Group, Text, ThemeIcon, UnstyledButton} from '@mantine/core';
 import {useNavigate} from "react-router-dom";
+import {useLocalStorage} from "@mantine/hooks";
 
 interface MainLinkProps {
     icon: React.ReactNode;
@@ -39,13 +40,16 @@ function MainLink({ icon, color, label, path }: MainLinkProps) {
     );
 }
 
+const [admin, tester, reader, developer] = ['ADMIN', 'TESTER', 'READER', 'DEVELOPER']
+
 const data = [
-    { icon: <Home size={16} />, color: 'blue', label: 'Home', path: '/dashboard' },
-    { icon: <ClipboardText size={16} />, color: 'teal', label: 'New Project', path: 'add-project' },
-    { icon: <Book2 size={16} />, color: 'blue', label: 'Projects', path: 'all-projects' },
+    { icon: <Home size={16} />, color: 'blue', label: 'Home', path: '/dashboard', roles: [admin, tester, reader, developer] },
+    { icon: <Users size={16} />, color: 'gray', label: 'Users', path: 'user-management',roles: [admin] },
+    { icon: <ClipboardText size={16} />, color: 'teal', label: 'New Project', path: 'add-project', roles: [admin, tester] },
 ];
 
 export function MainLinks() {
-    const links = data.map((link) => <MainLink {...link} key={link.label} />);
+    const role = localStorage.getItem("role") || "READER"
+    const links = data.filter(value => value.roles.includes(role)).map((link) => <MainLink {...link} key={link.label} />);
     return <div>{links}</div>;
 }

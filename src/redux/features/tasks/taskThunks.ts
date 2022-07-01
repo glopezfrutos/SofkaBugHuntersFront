@@ -1,7 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ITask } from "./taskTypes";
-import { HttpMethod } from "../../general/generalTypes";
-import { url } from "../../general/url";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {ITask} from "./taskTypes";
+import {HttpMethod} from "../../general/generalTypes";
+import {url} from "../../general/url";
 
 const GET_CHILDREN_TASKS = url + '/api/v1/project/'
 const TASK_ENDPOINT = url + '/api/v1/task/'
@@ -82,7 +82,8 @@ export const putTaskThunk = createAsyncThunk('put/task',
                 'Content-Type': 'application/json',
                 'Authorization': authBasic
             },
-            method: HttpMethod.PUT,
+            //The backed takes the post as a put.
+            method: HttpMethod.POST,
             body: JSON.stringify(task)
         })
         return await response.json() as ITask

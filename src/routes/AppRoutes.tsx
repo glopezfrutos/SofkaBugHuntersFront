@@ -8,6 +8,7 @@ import ProjectsPage from "../pages/project/allProjects/ProjectsPage";
 import ProjectDetailsPage from "../pages/project/detailProject/ProjectDetailsPage";
 import TaskDetailsPage from "../pages/task/detailTask/TaskDetailsPage";
 import BugDetailsPage from "../pages/bug/detailBug/BugDetailsPage";
+import UserManagement from "../pages/userManagement/UserManagement";
 
 interface IProps {
 }
@@ -18,9 +19,9 @@ const AppRoutes: React.FC<IProps> = () => {
         <Routes>
             <Route path='/' element={<LoginPage/>}/>
             <Route path="/dashboard" element={<DashboardShell/>}>
-                <Route index element={<ProjectCharts/>}/>
+                <Route index element={<ProjectsPage/>}/>
+                <Route path='user-management' element={<UserManagement/>}/>
                 <Route path='add-project' element={<AddProject/>}/>
-                <Route path='all-projects' element={<ProjectsPage/>}/>
                 <Route path='project/:projectId' element={<ProjectDetailsPage/>}/>
                 <Route path='project/:projectId/task/:taskId' element={<TaskDetailsPage/>}/>
                 <Route path='project/:projectId/task/:taskId/bug/:bugId' element={<BugDetailsPage/>}/>
