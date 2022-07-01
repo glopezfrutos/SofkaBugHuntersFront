@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {url} from "../../general/url";
 import {IBug} from "./bugTypes";
 import {HttpMethod} from "../../general/generalTypes";
+import { showNotification } from "@mantine/notifications";
 
 
 const GET_CHILDREN_BUGS = url + '/api/v1/task/'
@@ -17,7 +18,14 @@ export const getChildrenBugs = createAsyncThunk('get/childrenBugs',
                 'Authorization': authBasic
             }
         })
-        return await response.json() as IBug[]
+        if (response.ok) {
+            return await response.json() as IBug[]
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -28,7 +36,14 @@ export const getBugById = createAsyncThunk('get/singleBug',
                 'Authorization': authBasic
             }
         })
-        return await response.json() as IBug
+        if (response.ok) {
+            return await response.json() as IBug
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -43,7 +58,14 @@ export const postBugThunk = createAsyncThunk("post/bug",
                 'Content-Type': 'application/json',
             }
         })
-        return await response.json() as IBug
+        if (response.ok) {
+            return await response.json() as IBug
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
@@ -60,13 +82,20 @@ export const putBugThunk = createAsyncThunk("put/bug",
                 'Content-Type': 'application/json',
             }
         })
-        return await response.json() as IBug
+        if (response.ok) {
+            return await response.json() as IBug
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
 
 export const deleteBugById = createAsyncThunk("delete/bug",
     async (bugId: string) => {
-        await fetch(`${BUG_ENDPOINT}${bugId}`, {
+        const response = await fetch(`${BUG_ENDPOINT}${bugId}`, {
             method: HttpMethod.DELETE,
             headers: {
                 'Authorization': authBasic,
@@ -74,6 +103,13 @@ export const deleteBugById = createAsyncThunk("delete/bug",
                 'Content-Type': 'application/json',
             }
         })
-        return bugId
+        if (response.ok) {
+            return bugId
+        }
+        showNotification({
+            color: 'red',
+            title: 'Oops',
+            message: "There's something wrong with your credentials! Please log in again.",
+        })
     }
 )
